@@ -43,10 +43,12 @@
             <version>1.6.2</version>
         </dependency>
 
-        <!-- Mysql驱动包 -->
+        <!-- dm驱动包 -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.dameng</groupId>
+            <artifactId>DmJdbcDriver18</artifactId>
+            <version>8.1.2.192</version>
+
         </dependency>
 
         <!-- 核心模块-->

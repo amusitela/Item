@@ -83,10 +83,10 @@ mybatis:
     configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
-pagehelper: 
-  helperDialect: mysql
-  supportMethodsArguments: true
-  params: count=countSql 
+#pagehelper:
+#  helperDialect: mysql
+#  supportMethodsArguments: true
+#  params: count=countSql
 
 # Shiro
 shiro:
