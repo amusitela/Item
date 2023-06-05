@@ -46,7 +46,7 @@ public class GetXlsx {
 
             stmt = conn.createStatement();
 
-            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream("C:\\Users\\18132\\Desktop\\data.xlsx"));
+            XSSFWorkbook xssfWorkbook = new XSSFWorkbook(new FileInputStream("C:\\Users\\18132\\Desktop\\data.csv"));
             //获取工作簿下sheet的个数
             int sheetNum = xssfWorkbook.getNumberOfSheets();
 

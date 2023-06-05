@@ -26,8 +26,10 @@ public class GetTxt {
      * @param args
      */
 
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
+        txtToDB();
+    }
+    public static void txtToDB() throws IOException, SQLException {
 
         // TODO Auto-generated method stub
 
@@ -143,7 +145,7 @@ public class GetTxt {
 
                 sql.append(")");
 
-                System.out.println(sql);
+                //System.out.println(sql);
 
                 stmt.executeUpdate(sql.toString());
             }
@@ -179,6 +181,7 @@ public class GetTxt {
                 try {
 
                     reader.close();
+                    stmt.close();
 
                 } catch (IOException e) {
 
