@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
-PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-config.dtd">
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+
+    <typeAliases>
+        <package name="com.ruoyi.domain"/>
+        <!-- <typeAlias alias="User" type="com.ruoyi.domain.User"/>-->
+    </typeAliases>
+
+    <!--
+    environment :配置数据库链接环境信息，可以配置多个environment，通过default属性切换不同的environment；
+    -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">     <!--数据库连接池-->
+                <!--dm连接信息-->
+                <property name="driver" value="dm.jdbc.driver.DmDriver"/>
+                <property name="url" value="jdbc:dm://localhost:5236"/>
+                <property name="username" value="RJB"/>
+                <property name="password" value="123456"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <mappers>
+        <!--加载sql映射文件-->
+        <!-- <mapper resource="com/ruoyi/mapper/UserMapper.xml"/>-->
+        <package name="com.ruoyi.mapper"/>
+    </mappers>
+
     <!-- 全局参数 -->
-    <settings>
-        <!-- 使全局的映射器启用或禁用缓存 -->
+  <!--  <settings>
+        &lt;!&ndash; 使全局的映射器启用或禁用缓存 &ndash;&gt;
         <setting name="cacheEnabled"             value="true"   />
-        <!-- 允许JDBC 支持自动生成主键 -->
+        &lt;!&ndash; 允许JDBC 支持自动生成主键 &ndash;&gt;
         <setting name="useGeneratedKeys"         value="true"   />
-        <!-- 配置默认的执行器.SIMPLE就是普通执行器;REUSE执行器会重用预处理语句(prepared statements);BATCH执行器将重用语句并执行批量更新 -->
+        &lt;!&ndash; 配置默认的执行器.SIMPLE就是普通执行器;REUSE执行器会重用预处理语句(prepared statements);BATCH执行器将重用语句并执行批量更新 &ndash;&gt;
         <setting name="defaultExecutorType"      value="SIMPLE" />
-		<!-- 指定 MyBatis 所用日志的具体实现 -->
+        &lt;!&ndash; 指定 MyBatis 所用日志的具体实现 &ndash;&gt;
         <setting name="logImpl"                  value="SLF4J"  />
-        <!-- 使用驼峰命名法转换字段 -->
-		<!-- <setting name="mapUnderscoreToCamelCase" value="true"/> -->
-	</settings>
+        &lt;!&ndash; 使用驼峰命名法转换字段 &ndash;&gt;
+        &lt;!&ndash; <setting name="mapUnderscoreToCamelCase" value="true"/> &ndash;&gt;
+    </settings>-->
 	
 </configuration>

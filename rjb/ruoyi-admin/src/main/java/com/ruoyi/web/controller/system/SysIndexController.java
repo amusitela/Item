@@ -8,10 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.ShiroConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -26,6 +23,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.shiro.service.SysPasswordService;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysMenuService;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 首页 业务处理
@@ -154,5 +152,12 @@ public class SysIndexController extends BaseController {
             return DateUtils.differentDaysByMillisecond(nowDate, pwdUpdateDate) > passwordValidateDays;
         }
         return false;
+    }
+    @RequestMapping("/")
+    public ModelAndView index() {
+        //项目在本地运行无异常，打包后发现页面无法跳转
+        //检查日志发现是Thymeleaf出现问题 org.thymeleaf.exceptions.TemplateInputException:
+        //return new ModelAndView("/index.html");
+        return new ModelAndView("index.html");
     }
 }

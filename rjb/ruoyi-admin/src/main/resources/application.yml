@@ -45,6 +45,8 @@ user:
 
 # Spring配置
 spring:
+  #开启权限
+  resources: classpath:/META-INF/resources/, classpath:/resources/, classpath:/static/, classpath:/public/, classpath:/templates/
   # 模板引擎
   thymeleaf:
     mode: HTML
@@ -74,12 +76,13 @@ spring:
       enabled: true
 
 # MyBatis
+
 mybatis:
     # 搜索指定包别名
     typeAliasesPackage: com.ruoyi.**.domain
     # 配置mapper的扫描，找到所有的mapper.xml映射文件
     mapperLocations: classpath*:mapper/**/*Mapper.xml
-    # 加载全局的配置文件
+     #加载全局的配置文件
     configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
@@ -140,3 +143,4 @@ xss:
 swagger:
   # 是否开启swagger
   enabled: true
+

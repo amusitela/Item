@@ -40,6 +40,9 @@ public class ResourcesConfig implements WebMvcConfigurer
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry)
     {
+        /** 前端静态资源配置 */
+        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+
         /** 本地文件上传路径 */
         registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**").addResourceLocations("file:" + RuoYiConfig.getProfile() + "/");
 

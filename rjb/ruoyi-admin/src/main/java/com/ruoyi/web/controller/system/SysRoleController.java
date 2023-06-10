@@ -49,7 +49,7 @@ public class SysRoleController extends BaseController {
     @RequiresPermissions("system:role:view")
     @GetMapping()
     public String role() {
-        return prefix + "/role";
+        return prefix + "DMAPI";
     }
 
     @RequiresPermissions("system:role:list")
