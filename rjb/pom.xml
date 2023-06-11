@@ -34,6 +34,13 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
+
+            <!-- 物流模块-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-Logistics</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
         
             <!-- SpringBoot的依赖配置-->
             <dependency>
@@ -193,6 +200,7 @@
         <module>ruoyi-quartz</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
+        <module>ruoyi-Logistics</module>
     </modules>
     <packaging>pom</packaging>
 

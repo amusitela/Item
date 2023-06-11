@@ -132,9 +132,21 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!-- 物流模块-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-Logistics</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test</artifactId>
+            <version>2.3.12.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -159,7 +171,8 @@
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <warName>${project.artifactId}</warName>
                 </configuration>   
-            </plugin>   
+            </plugin>
+
             <!-- YUI Compressor (CSS/JS压缩) 
             <plugin>
                 <groupId>net.alchim31.maven</groupId>

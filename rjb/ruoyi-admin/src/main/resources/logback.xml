@@ -100,7 +100,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.ruoyi" level="DEBUG" additivity="false">
+    <logger name="com.ruoyi" level="INFO" additivity="false">
         <appender-ref ref="Console"/>
     </logger>
 
@@ -111,7 +111,7 @@
      ， 默认debug
       <root>可以包含零个或多个<appender-ref>元素，标识这个输出位置将会被本日志级别控制。
       -->
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="Console"/>
     </root>
 </configuration> 
