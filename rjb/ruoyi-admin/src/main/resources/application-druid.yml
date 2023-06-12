@@ -7,7 +7,7 @@ spring:
             # 主库数据源
             master:
                 url: jdbc:dm://localhost:5236
-                username: RJB
+                username: RJBR
                 password: '123456'
             # 从库数据源
             slave:

@@ -70,30 +70,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 
 	<select id="selectDbTableList" parameterType="GenTable" resultMap="GenTableResult">
-		select table_name, table_comment, create_time, update_time from information_schema.tables
-		where table_schema = (select database())
-		AND table_name NOT LIKE 'QRTZ_%' AND table_name NOT LIKE 'gen_%'
-		AND table_name NOT IN (select table_name from gen_table)
+		select so.NAME table_name, st.COMMENT$ table_comment, so.CRTDATE create_time from SYS.SYSOBJECTS so left join SYS.SYSTABLECOMMENTS st on so.NAME = st.TVNAME and st.TABLE_TYPE = 'TABLE' and st.SCHNAME = (select CURR_SCH from V$SESSIONS LIMIT 1)
+		where so.TYPE$='SCHOBJ' and so.SUBTYPE$='UTAB' and so.PID = -1 and INSTR(so.NAME,'##') = 0 and so.SCHID = (select ID from SYS.SYSOBJECTS where TYPE$='SCH' and NAME= (select CURR_SCH from V$SESSIONS LIMIT 1)) and so.NAME NOT LIKE 'QRTZ_%' AND so.NAME NOT LIKE 'gen_%'
+		and so.NAME NOT IN (select table_name from gen_table)
 		<if test="tableName != null and tableName != ''">
-			AND lower(table_name) like lower(concat('%', #{tableName}, '%'))
+			and lower(so.NAME) like lower(concat('%', #{tableName}, '%'))
 		</if>
 		<if test="tableComment != null and tableComment != ''">
-			AND lower(table_comment) like lower(concat('%', #{tableComment}, '%'))
+			and lower(st.COMMENT$) like lower(concat('%', #{tableComment}, '%'))
 		</if>
-        order by create_time desc
+		order by so.CRTDATE desc
 	</select>
-	
+
+
 	<select id="selectDbTableListByNames" resultMap="GenTableResult">
-		select table_name, table_comment, create_time, update_time from information_schema.tables
-		where table_name NOT LIKE 'qrtz_%' and table_name NOT LIKE 'gen_%' and table_schema = (select database())
-		and table_name in
-	    <foreach collection="array" item="name" open="(" separator="," close=")">
- 			#{name}
-        </foreach> 
+		select so.NAME table_name, st.COMMENT$ table_comment, so.CRTDATE create_time from SYS.SYSOBJECTS so left join SYS.SYSTABLECOMMENTS st on so.NAME = st.TVNAME and st.TABLE_TYPE = 'TABLE' and st.SCHNAME = (select CURR_SCH from V$SESSIONS LIMIT 1)
+		where so.TYPE$='SCHOBJ' and so.SUBTYPE$='UTAB' and so.PID = -1 and INSTR(so.NAME,'##') = 0 and so.SCHID = (select ID from SYS.SYSOBJECTS where TYPE$='SCH' and NAME= (select CURR_SCH from V$SESSIONS LIMIT 1)) and so.NAME NOT LIKE 'qrtz_%' and so.NAME NOT LIKE 'gen_%'
+		and so.NAME in
+		<foreach collection="array" item="name" open="(" separator="," close=")">
+			#{name}
+		</foreach>
 	</select>
-	
+
+
 	<select id="selectTableByName" parameterType="String" resultMap="GenTableResult">
-		select table_name, table_comment, create_time, update_time from information_schema.tables
+		select table_name, table_comment, create_time, update_time from user_tables
 		where table_comment <![CDATA[ <> ]]> '' and table_schema = (select database())
 		and table_name = #{tableName}
 	</select>
