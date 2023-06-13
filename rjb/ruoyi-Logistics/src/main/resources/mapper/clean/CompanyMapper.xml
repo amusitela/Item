@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.Logistics.clean.mapper.CompanyMapper">
+    
+    <resultMap type="Company" id="CompanyResult">
+        <result property="num"    column="公司号"    />
+        <result property="companyName"    column="公司名称"    />
+        <result property="customerName"    column="客户编号"    />
+        <result property="personName"    column="联系人"    />
+        <result property="phone"    column="电话"    />
+        <result property="place"    column="省市区"    />
+        <result property="error"    column="异常"    />
+    </resultMap>
+
+    <sql id="selectCompanyVo">
+        select 公司号, 公司名称, 客户编号, 联系人, 电话, 省市区, 异常 from TEMP_物流公司
+    </sql>
+
+    <select id="selectCompanyList" parameterType="Company" resultMap="CompanyResult">
+        <include refid="selectCompanyVo"/>
+        <where>  
+            <if test="num != null "> and 公司号 = #{num}</if>
+            <if test="companyName != null  and companyName != ''"> and 公司名称 = #{companyName}</if>
+            <if test="customerName != null  and customerName != ''"> and 客户编号 = #{customerName}</if>
+            <if test="personName != null  and personName != ''"> and 联系人 = #{personName}</if>
+            <if test="phone != null  and phone != ''"> and 电话 = #{phone}</if>
+            <if test="place != null  and place != ''"> and 省市区 = #{place}</if>
+            <if test="error != null "> and 异常 = #{error}</if>
+        </where>
+    </select>
+    
+    <select id="selectCompanyByNum" parameterType="Integer" resultMap="CompanyResult">
+        <include refid="selectCompanyVo"/>
+        where 公司号 = #{num}
+    </select>
+        
+    <insert id="insertCompany" parameterType="Company">
+        insert into TEMP_物流公司
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num != null">公司号,</if>
+            <if test="companyName != null">公司名称,</if>
+            <if test="customerName != null">客户编号,</if>
+            <if test="personName != null">联系人,</if>
+            <if test="phone != null">电话,</if>
+            <if test="place != null">省市区,</if>
+            <if test="error != null">异常,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="num != null">#{num},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="customerName != null">#{customerName},</if>
+            <if test="personName != null">#{personName},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="place != null">#{place},</if>
+            <if test="error != null">#{error},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCompany" parameterType="Company">
+        update TEMP_物流公司
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyName != null">公司名称 = #{companyName},</if>
+            <if test="customerName != null">客户编号 = #{customerName},</if>
+            <if test="personName != null">联系人 = #{personName},</if>
+            <if test="phone != null">电话 = #{phone},</if>
+            <if test="place != null">省市区 = #{place},</if>
+            <if test="error != null">异常 = #{error},</if>
+        </trim>
+        where 公司号 = #{num}
+    </update>
+
+    <delete id="deleteCompanyByNum" parameterType="Integer">
+        delete from TEMP_物流公司 where 公司号 = #{num}
+    </delete>
+
+    <delete id="deleteCompanyByNums" parameterType="String">
+        delete from TEMP_物流公司 where 公司号 in 
+        <foreach item="num" collection="array" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+    </delete>
+
+</mapper>

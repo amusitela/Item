@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.Logistics.clean.mapper.LogisticsMapper">
+    
+    <resultMap type="Logistics" id="LogisticsResult">
+        <result property="tNum"    column="提单号"    />
+        <result property="name"    column="货主名称"    />
+        <result property="num"    column="货主代码"    />
+        <result property="company"    column="物流公司（货代）"    />
+        <result property="containerNum"    column="集装箱箱号"    />
+        <result property="goods"    column="货物名称"    />
+        <result property="weight"    column="货重（吨）"    />
+        <result property="error"    column="异常"    />
+    </resultMap>
+
+    <sql id="selectLogisticsVo">
+        select 提单号, 货主名称, 货主代码, "物流公司（货代）", 集装箱箱号, 货物名称, "货重（吨）", 异常 from TEMP_物流信息
+    </sql>
+
+    <select id="selectLogisticsList" parameterType="Logistics" resultMap="LogisticsResult">
+        <include refid="selectLogisticsVo"/>
+        <where>  
+            <if test="tNum != null  and tNum != ''"> and 提单号 = #{tNum}</if>
+            <if test="name != null  and name != ''"> and 货主名称 = #{name}</if>
+            <if test="num != null  and num != ''"> and 货主代码 = #{num}</if>
+            <if test="company != null  and company != ''"> and "物流公司（货代）" = #{company}</if>
+            <if test="containerNum != null  and containerNum != ''"> and 集装箱箱号 = #{containerNum}</if>
+            <if test="goods != null  and goods != ''"> and 货物名称 = #{goods}</if>
+            <if test="weight != null  and weight != ''"> and "货重（吨）"= #{weight}</if>
+            <if test="error != null "> and 异常 = #{error}</if>
+        </where>
+    </select>
+    
+    <select id="selectLogisticsByTNum" parameterType="String" resultMap="LogisticsResult">
+        <include refid="selectLogisticsVo"/>
+        where 提单号 = #{tNum}
+    </select>
+    <select id="findNotIn" resultType="java.lang.String">
+         select 货主代码 from temp_物流信息 where temp_物流信息.货主代码 not in (select 客户编号 FROM temp_客户信息)
+    </select>
+
+    <insert id="insertLogistics" parameterType="Logistics">
+        insert into TEMP_物流信息
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tNum != null">提单号,</if>
+            <if test="name != null">货主名称,</if>
+            <if test="num != null">货主代码,</if>
+            <if test="company != null">"物流公司（货代）",</if>
+            <if test="containerNum != null">集装箱箱号,</if>
+            <if test="goods != null">货物名称,</if>
+            <if test="weight != null">"货重（吨）",</if>
+            <if test="error != null">异常,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tNum != null">#{tNum},</if>
+            <if test="name != null">#{name},</if>
+            <if test="num != null">#{num},</if>
+            <if test="company != null">#{company},</if>
+            <if test="containerNum != null">#{containerNum},</if>
+            <if test="goods != null">#{goods},</if>
+            <if test="weight != null">#{weight},</if>
+            <if test="error != null">#{error},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLogistics" parameterType="Logistics">
+        update TEMP_物流信息
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">货主名称 = #{name},</if>
+            <if test="num != null">货主代码 = #{num},</if>
+            <if test="company != null">"物流公司（货代）" = #{company},</if>
+            <if test="containerNum != null">集装箱箱号 = #{containerNum},</if>
+            <if test="goods != null">货物名称 = #{goods},</if>
+            <if test="weight != null">"货重（吨）" = #{weight},</if>
+            <if test="error != null">异常 = #{error},</if>
+        </trim>
+        where 提单号 = #{tNum}
+    </update>
+
+    <delete id="deleteLogisticsByTNum" parameterType="String">
+        delete from TEMP_物流信息 where 提单号 = #{tNum}
+    </delete>
+
+    <delete id="deleteLogisticsByTNums" parameterType="String">
+        delete from TEMP_物流信息 where 提单号 in 
+        <foreach item="tNum" collection="array" open="(" separator="," close=")">
+            #{tNum}
+        </foreach>
+    </delete>
+
+</mapper>

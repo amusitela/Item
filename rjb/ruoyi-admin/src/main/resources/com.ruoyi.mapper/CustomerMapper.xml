@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+  namespace:名称空间
+-->
+<mapper namespace="com.ruoyi.mapper.CustomerMapper">
+    <resultMap id="CustomerResultMap" type="customer">
+        <!--
+           id:完成主键字段的映射
+               column:列名
+               property:实体类的属性名
+           result:非主键字段
+        -->
+        <result column="客户编号" property="num"/>
+        <result column="客户名称" property="name"/>
+        <result column="手机号" property="phone"/>
+        <result column="省市区" property="place"/>
+        <result column="异常" property="error"/>
+    </resultMap>
+
+    <select id="selectId" resultMap="CustomerResultMap">
+        select id from temp_客户信息;
+    </select>
+
+    <select id="selectAll" resultMap="CustomerResultMap">
+        select * from temp_客户信息;
+    </select>
+
+    <select id="selectById" resultMap="CustomerResultMap">
+    </select>
+
+    <select id="selectSingle" resultMap="CustomerResultMap">
+        select * from temp_客户信息 where 客户编号=#{customer.num}
+    </select>
+
+
+
+
+    <update id="update">
+        update temp_客户信息
+        <set>
+            异常=#{error}
+        </set>
+        where 客户编号=#{num}
+
+    </update>
+
+
+</mapper>
