@@ -18,7 +18,7 @@ import java.sql.Statement;
 public class GetXlsx {
 
     public static void main(String[] args) {
-        String filepath="C:\\Users\\18132\\Desktop\\data.xlsx";
+        String filepath="C:\\Users\\18132\\Desktop\\集装箱动态2022.xlsx";
         excelFind(filepath);
     }
     public static void excelFind(String filepath) {
@@ -73,7 +73,11 @@ public class GetXlsx {
                                 if (rol < maxRol ) sql.append(",");
                             } else {
                                 String cell = sheet.getRow(row).getCell(rol).toString();
-                                sql2.append("'" + cell + "'");
+                                System.out.println(cell);
+                                if (cell.length() >= 7 && cell.charAt(5) == '-') {
+                                    sql2.append("datetime");
+                                }
+                                sql2.append( cell);
                                 if (rol < maxRol) sql2.append(",");
                             }
                             //sheets.getRow(1).getCell(1);获取元素值
@@ -113,7 +117,10 @@ public class GetXlsx {
 
                             } else {
                                 String cell = sheet.getRow(row).getCell(rol).toString();
-                                sql2.append("'" + cell + "'");
+                                if (cell.length() >= 7 && cell.charAt(5) == '-') {  //太草率
+                                    sql2.append("datetime");
+                                }
+                                sql2.append( cell );
                                 if (rol < maxRol - 1) sql2.append(",");
                             }
                             //sheets.getRow(1).getCell(1);获取元素值

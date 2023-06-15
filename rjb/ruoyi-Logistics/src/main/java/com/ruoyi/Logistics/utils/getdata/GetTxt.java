@@ -1,21 +1,13 @@
 package com.ruoyi.Logistics.utils.getdata;
 
 import java.io.BufferedReader;
-
 import java.io.File;
-
 import java.io.FileNotFoundException;
-
 import java.io.FileReader;
-
 import java.io.IOException;
-
 import java.sql.Connection;
-
 import java.sql.DriverManager;
-
 import java.sql.SQLException;
-
 import java.sql.Statement;
 
 @SuppressWarnings("all")
@@ -27,7 +19,7 @@ public class GetTxt {
      */
 
     public static void main(String[] args) throws IOException, SQLException {
-        String filepath="C:\\Users\\18132\\Desktop\\123.txt";
+        String filepath="C:\\Users\\18132\\Desktop\\装货表2022.txt";
         txtToDB(filepath);
     }
     public static void txtToDB(String filepath) throws IOException, SQLException {
@@ -62,7 +54,7 @@ public class GetTxt {
             while ((line = reader.readLine()) != null) {
                 sql = new StringBuffer();
                 if (cnt == 0) {
-                    name = line.split("\\s+");
+                    name = line.split(",");
                     if(GetTxt.compareName(name,user_wk)){
                         b=column[0];
                     }
@@ -79,24 +71,45 @@ public class GetTxt {
                     continue;
                 }
 
-                str = line.split("\\s+");
+                str = line.split("\'"+','+"\'");
                 if (str.length == 1) continue;
                 sql.append("insert into "+ b +"(");
                 for (int j = 0; j < name.length; j++) {
-                    sql.append(name[j]);
-                    if (j < name.length - 1) sql.append(",");
+                        sql.append(name[j]);
+                    if (j < name.length -1) sql.append(",");
                 }
-                sql.append(",异常) values(");
+                if(b=="temp_work") {
+                    sql.append(",操作,异常) values(");
+                }
+                else{
+                    sql.append(",异常) values(");
+                }
                 for (int i = 0; i < str.length; i++) {
                     String s = str[i];
                     if (s.length() >= 5 && s.charAt(4) == '-') {
-                        s = s + str[i + 1];
-                        i++;
+                        sql.append("datetime");
                     }
-                    sql.append("'" + s + "'");
+                    if(i==0) {
+                        sql.append(s +'\'');
+                    }
+                    else if(i== str.length-1){
+                        sql.append('\''+s);
+                    }
+                    else {
+                        sql.append('\''+s +'\'');
+                    }
                     if (i < name.length - 1) sql.append(",");
                 }
-                sql.append(",0 )");
+                //z装货为一，卸货为0
+                if(b=="temp_work"&&filepath.contains("装货表")){
+                    sql.append(",1 , 0 )");
+                }
+                else if(b=="temp_work"&&filepath.contains("卸货表")) {
+                    sql.append(",0 , 0 )");
+                }
+                else {
+                    sql.append(",0 )");
+                }
                 System.out.println(sql);
                 stmt.executeUpdate(sql.toString());
             }
@@ -129,7 +142,7 @@ public static boolean compareName(String[] arr1, String[] arr2) {
         return false;
     }
     for (int i = 0; i < arr1.length; i++) {
-        if (!arr1[i].equals(arr2[i])) {
+        if (!arr1[i].contains(arr2[i])) {
             return false;
         }
     }
