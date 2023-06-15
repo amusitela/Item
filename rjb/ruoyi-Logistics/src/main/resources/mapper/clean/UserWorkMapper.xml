@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.Logistics.clean.mapper.UserWorkMapper">
+    
+    <resultMap type="UserWork" id="UserWorkResult">
+        <result property="num"    column="作业号"    />
+        <result property="shipCompany"    column="船公司"    />
+        <result property="shipName"    column="船名称"    />
+        <result property="ws"    column="作业开始时间"    />
+        <result property="we"    column="作业结束时间"    />
+        <result property="start"    column="始发时间"    />
+        <result property="end"    column="到达时间"    />
+        <result property="port"    column="作业港口"    />
+        <result property="tNum"    column="提单号"    />
+        <result property="containerNum"    column="集装箱箱号"    />
+        <result property="cc"    column="箱尺寸（TEU）"    />
+        <result property="splace"    column="启运地"    />
+        <result property="eplace"    column="目的地"    />
+        <result property="status"    column="操作"    />
+    </resultMap>
+
+    <sql id="selectUserWorkVo">
+        select 作业号, 船公司, 船名称, 作业开始时间, 作业结束时间, 始发时间, 到达时间, 作业港口, 提单号, 集装箱箱号, "箱尺寸（TEU）", 启运地, 目的地, 操作 from USER_WORK
+    </sql>
+
+    <select id="selectUserWorkList" parameterType="UserWork" resultMap="UserWorkResult">
+        <include refid="selectUserWorkVo"/>
+        <where>  
+            <if test="num != null "> and 作业号 = #{num}</if>
+            <if test="shipCompany != null  and shipCompany != ''"> and 船公司 = #{shipCompany}</if>
+            <if test="shipName != null  and shipName != ''"> and 船名称 = #{shipName}</if>
+            <if test="ws != null "> and 作业开始时间 = #{ws}</if>
+            <if test="we != null "> and 作业结束时间 = #{we}</if>
+            <if test="start != null "> and 始发时间 = #{start}</if>
+            <if test="end != null "> and 到达时间 = #{end}</if>
+            <if test="port != null  and port != ''"> and 作业港口 = #{port}</if>
+            <if test="tNum != null  and tNum != ''"> and 提单号 = #{tNum}</if>
+            <if test="containerNum != null  and containerNum != ''"> and 集装箱箱号 = #{containerNum}</if>
+            <if test="cc != null  and cc != ''"> and  "箱尺寸（TEU）" = #{cc}</if>
+            <if test="splace != null  and splace != ''"> and 启运地 = #{splace}</if>
+            <if test="eplace != null  and eplace != ''"> and 目的地 = #{eplace}</if>
+            <if test="status != null "> and 操作 = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserWorkByNum" parameterType="Integer" resultMap="UserWorkResult">
+        <include refid="selectUserWorkVo"/>
+        where 作业号 = #{num}
+    </select>
+    <select id="selectTempWorkList" resultMap="UserWorkResult">
+        select 船公司,船名称,作业开始时间,作业结束时间,始发时间,到达时间,作业港口,提单号,集装箱箱号,"箱尺寸（TEU）",启运地,目的地,操作 from temp_work where 异常 = 0
+    </select>
+
+    <insert id="insertUserWork" parameterType="UserWork">
+        insert into USER_WORK
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num != null">作业号,</if>
+            <if test="shipCompany != null">船公司,</if>
+            <if test="shipName != null">船名称,</if>
+            <if test="ws != null">作业开始时间,</if>
+            <if test="we != null">作业结束时间,</if>
+            <if test="start != null">始发时间,</if>
+            <if test="end != null">到达时间,</if>
+            <if test="port != null">作业港口,</if>
+            <if test="tNum != null">提单号,</if>
+            <if test="containerNum != null">集装箱箱号,</if>
+            <if test="cc != null"> "箱尺寸（TEU）",</if>
+            <if test="splace != null">启运地,</if>
+            <if test="eplace != null">目的地,</if>
+            <if test="status != null">操作,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="num != null">#{num},</if>
+            <if test="shipCompany != null">#{shipCompany},</if>
+            <if test="shipName != null">#{shipName},</if>
+            <if test="ws != null">#{ws},</if>
+            <if test="we != null">#{we},</if>
+            <if test="start != null">#{start},</if>
+            <if test="end != null">#{end},</if>
+            <if test="port != null">#{port},</if>
+            <if test="tNum != null">#{tNum},</if>
+            <if test="containerNum != null">#{containerNum},</if>
+            <if test="cc != null">#{cc},</if>
+            <if test="splace != null">#{splace},</if>
+            <if test="eplace != null">#{eplace},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserWork" parameterType="UserWork">
+        update USER_WORK
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shipCompany != null">船公司 = #{shipCompany},</if>
+            <if test="shipName != null">船名称 = #{shipName},</if>
+            <if test="ws != null">作业开始时间 = #{ws},</if>
+            <if test="we != null">作业结束时间 = #{we},</if>
+            <if test="start != null">始发时间 = #{start},</if>
+            <if test="end != null">到达时间 = #{end},</if>
+            <if test="port != null">作业港口 = #{port},</if>
+            <if test="tNum != null">提单号 = #{tNum},</if>
+            <if test="containerNum != null">集装箱箱号 = #{containerNum},</if>
+            <if test="cc != null"> "箱尺寸（TEU）" = #{cc},</if>
+            <if test="splace != null">启运地 = #{splace},</if>
+            <if test="eplace != null">目的地 = #{eplace},</if>
+            <if test="status != null">操作 = #{status},</if>
+        </trim>
+        where 作业号 = #{num}
+    </update>
+
+    <delete id="deleteUserWorkByNum" parameterType="Integer">
+        delete from USER_WORK where 作业号 = #{num}
+    </delete>
+
+    <delete id="deleteUserWorkByNums" parameterType="String">
+        delete from USER_WORK where 作业号 in 
+        <foreach item="num" collection="array" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+    </delete>
+
+</mapper>
