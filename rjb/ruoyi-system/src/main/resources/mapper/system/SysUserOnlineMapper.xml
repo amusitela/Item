@@ -58,10 +58,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</where>
 	</select>
-	
+	<!--出现日期错误-->
 	<select id="selectOnlineByExpired" parameterType="String" resultMap="SysUserOnlineResult">
-		<include refid="selectOnlineVo"/> o 
-		WHERE o.last_access_time <![CDATA[ <= ]]> #{lastAccessTime} ORDER BY o.last_access_time ASC
+		<include refid="selectOnlineVo"/> o
+
+		WHERE o.last_access_time <![CDATA[ <= ]]>
+		<trim prefix="timestamp " >
+			#{lastAccessTime}
+		</trim>
+		 ORDER BY o.last_access_time ASC
 	</select>
 
 </mapper> 

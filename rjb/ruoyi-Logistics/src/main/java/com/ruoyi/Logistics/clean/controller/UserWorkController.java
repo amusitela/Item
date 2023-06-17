@@ -1,6 +1,8 @@
 package com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
+
+import com.ruoyi.Logistics.clean.service.IWorkService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,7 +25,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * workController
  * 
  * @author lyw
- * @date 2023-06-14
+ * @date 2023-06-16
  */
 @Controller
 @RequestMapping("/clean/inserts")
@@ -34,6 +36,9 @@ public class UserWorkController extends BaseController
     @Autowired
     private IUserWorkService userWorkService;
 
+    @Autowired
+    private IWorkService workService;
+
     @RequiresPermissions("clean:inserts:view")
     @GetMapping()
     public String inserts()
@@ -41,20 +46,33 @@ public class UserWorkController extends BaseController
         return prefix + "/inserts";
     }
 
+
     /**
-     * 获取work列表
+     * 获取过的数据将在temp表中删除
+     * 获取work的正确数据
      */
+
     @GetMapping("/test")
     @ResponseBody
     public List<UserWork> GetWork()
     {
         List<UserWork> list = userWorkService.selectTempWorkList(new UserWork());
         for (UserWork user: list
-             ) {
+        ) {
             int i = userWorkService.insertUserWork(user);
+            int i1 = workService.deleteWorkByNo(Long.valueOf(user.getNum()));
         }
         List<UserWork> userWorks = userWorkService.selectUserWorkList(new UserWork());
         return userWorks;
+    }
+
+
+    @GetMapping("/test1")
+    @ResponseBody
+    public List<UserWork> GetWork1()
+    {
+        List<UserWork> list = userWorkService.selectTempWorkList(new UserWork());
+        return list;
     }
 
     /**

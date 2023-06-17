@@ -79,8 +79,9 @@ public class LogisticsController extends BaseController
         for (int i = 0; i < cnt; i ++ ) {
             logistics = logisticses.get(i);
             //去重
-            if (logistcsmap.get(logistics.getNum()) == null) {
-                logistcsmap.put(logistics.getNum(), 1);
+            String s = logistics.gettNum() + logistics.getName();
+            if (logistcsmap.get(s) == null) {
+                logistcsmap.put(s, 1);
             }
             else {
                 logistics.setError(1);

@@ -3,6 +3,7 @@ package com.ruoyi.Logistics.clean.controller;
 import java.util.List;
 
 import com.ruoyi.Logistics.clean.domain.UserLogistics;
+import com.ruoyi.Logistics.clean.service.ICustomerService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,9 @@ public class UserCustomerController extends BaseController
     @Autowired
     private IUserCustomerService userCustomerService;
 
+    @Autowired
+    private ICustomerService customerService;
+
     @RequiresPermissions("clean:insertsCustomer:view")
     @GetMapping()
     public String insertsCustomer()
@@ -54,8 +58,8 @@ public class UserCustomerController extends BaseController
 
 
     /**
-     * 查询TempCustomer列表
-     *
+     * 查询获取TempCustomer正确数据的列表
+     *获取过的数据将在temp表中删除
      */
     @GetMapping("/test")
     @ResponseBody
@@ -65,6 +69,7 @@ public class UserCustomerController extends BaseController
         for (UserCustomer user: list
              ) {
             int i = userCustomerService.insertUserCustomer(user);
+            int i1 = customerService.deleteCustomerByNum(user.getNum());
         }
         List<UserCustomer> userCustomers = userCustomerService.selectUserCustomerList(new UserCustomer());
         return userCustomers;

@@ -7,7 +7,7 @@ import com.ruoyi.Logistics.clean.domain.UserWork;
  * workService接口
  * 
  * @author lyw
- * @date 2023-06-14
+ * @date 2023-06-16
  */
 public interface IUserWorkService 
 {
@@ -20,21 +20,20 @@ public interface IUserWorkService
     public UserWork selectUserWorkByNum(Integer num);
 
     /**
+     * 查询temp列表
+     *
+     * @param userWork work
+     * @return work集合
+     */
+    public List<UserWork> selectTempWorkList(UserWork userWork);
+
+    /**
      * 查询work列表
      * 
      * @param userWork work
      * @return work集合
      */
     public List<UserWork> selectUserWorkList(UserWork userWork);
-
-
-    /**
-     * 查询tempwork列表
-     *
-     * @param userWork work
-     * @return work集合
-     */
-    public List<UserWork> selectTempWorkList(UserWork userWork);
 
     /**
      * 新增work

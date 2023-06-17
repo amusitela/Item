@@ -7,7 +7,7 @@ import com.ruoyi.Logistics.clean.domain.UserCompany;
  * userCompanyService接口
  * 
  * @author lyw
- * @date 2023-06-14
+ * @date 2023-06-17
  */
 public interface IUserCompanyService 
 {
@@ -28,13 +28,12 @@ public interface IUserCompanyService
     public List<UserCompany> selectUserCompanyList(UserCompany userCompany);
 
     /**
-     * 查询userCompany列表
+     * 查询TempCompany列表
      *
      * @param userCompany userCompany
      * @return userCompany集合
      */
     public List<UserCompany> selectTempCompanyList(UserCompany userCompany);
-
 
     /**
      * 新增userCompany

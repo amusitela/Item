@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="UserCompany" id="UserCompanyResult">
         <result property="companyNum"    column="公司号"    />
         <result property="companyName"    column="公司名称"    />
-        <result property="num"    column="客户编号"    />
+        <result property="customerNum"    column="客户编号"    />
         <result property="personName"    column="联系人"    />
         <result property="phone"    column="电话"    />
         <result property="place"    column="省市区"    />
@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="companyNum != null "> and 公司号 = #{companyNum}</if>
             <if test="companyName != null  and companyName != ''"> and 公司名称 = #{companyName}</if>
-            <if test="num != null  and num != ''"> and 客户编号 = #{num}</if>
+            <if test="customerNum != null  and customerNum != ''"> and 客户编号 = #{customerNum}</if>
             <if test="personName != null  and personName != ''"> and 联系人 = #{personName}</if>
             <if test="phone != null  and phone != ''"> and 电话 = #{phone}</if>
             <if test="place != null  and place != ''"> and 省市区 = #{place}</if>
@@ -37,12 +37,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select 公司号,公司名称,客户编号,联系人,电话,省市区 from temp_物流公司 where 异常=0
     </select>
 
+
     <insert id="insertUserCompany" parameterType="UserCompany">
         insert into USER_物流公司
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="companyNum != null">公司号,</if>
             <if test="companyName != null">公司名称,</if>
-            <if test="num != null">客户编号,</if>
+            <if test="customerNum != null">客户编号,</if>
             <if test="personName != null">联系人,</if>
             <if test="phone != null">电话,</if>
             <if test="place != null">省市区,</if>
@@ -50,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="companyNum != null">#{companyNum},</if>
             <if test="companyName != null">#{companyName},</if>
-            <if test="num != null">#{num},</if>
+            <if test="customerNum != null">#{customerNum},</if>
             <if test="personName != null">#{personName},</if>
             <if test="phone != null">#{phone},</if>
             <if test="place != null">#{place},</if>
@@ -61,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update USER_物流公司
         <trim prefix="SET" suffixOverrides=",">
             <if test="companyName != null">公司名称 = #{companyName},</if>
-            <if test="num != null">客户编号 = #{num},</if>
+            <if test="customerNum != null">客户编号 = #{customerNum},</if>
             <if test="personName != null">联系人 = #{personName},</if>
             <if test="phone != null">电话 = #{phone},</if>
             <if test="place != null">省市区 = #{place},</if>

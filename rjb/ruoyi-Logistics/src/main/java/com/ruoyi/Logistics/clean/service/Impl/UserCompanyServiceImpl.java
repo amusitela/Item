@@ -12,7 +12,7 @@ import com.ruoyi.common.core.text.Convert;
  * userCompanyService业务层处理
  * 
  * @author lyw
- * @date 2023-06-14
+ * @date 2023-06-17
  */
 @Service
 public class UserCompanyServiceImpl implements IUserCompanyService 
@@ -44,12 +44,6 @@ public class UserCompanyServiceImpl implements IUserCompanyService
         return userCompanyMapper.selectUserCompanyList(userCompany);
     }
 
-    /**
-     * 查询tempCompany列表
-     *
-     * @param userCompany userCompany
-     * @return userCompany
-     */
     @Override
     public List<UserCompany> selectTempCompanyList(UserCompany userCompany) {
         return userCompanyMapper.selectTempCompanyList(userCompany);

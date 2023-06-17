@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * userCompany对象 USER_物流公司
  * 
  * @author lyw
- * @date 2023-06-14
+ * @date 2023-06-17
  */
 public class UserCompany extends BaseEntity
 {
@@ -25,7 +25,7 @@ public class UserCompany extends BaseEntity
 
     /**  */
     @Excel(name = "")
-    private String num;
+    private String customerNum;
 
     /**  */
     @Excel(name = "")
@@ -57,14 +57,14 @@ public class UserCompany extends BaseEntity
     {
         return companyName;
     }
-    public void setNum(String num) 
+    public void setCustomerNum(String customerNum) 
     {
-        this.num = num;
+        this.customerNum = customerNum;
     }
 
-    public String getNum() 
+    public String getCustomerNum() 
     {
-        return num;
+        return customerNum;
     }
     public void setPersonName(String personName) 
     {
@@ -99,7 +99,7 @@ public class UserCompany extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("companyNum", getCompanyNum())
             .append("companyName", getCompanyName())
-            .append("num", getNum())
+            .append("customerNum", getCustomerNum())
             .append("personName", getPersonName())
             .append("phone", getPhone())
             .append("place", getPlace())

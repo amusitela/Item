@@ -1,6 +1,8 @@
 package com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
+
+import com.ruoyi.Logistics.clean.service.IContainerService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,9 @@ public class UserContainerController extends BaseController
     @Autowired
     private IUserContainerService userContainerService;
 
+    @Autowired
+    private IContainerService containerService;
+
     @RequiresPermissions("clean:insertContainer:view")
     @GetMapping()
     public String insertContainer()
@@ -37,6 +42,11 @@ public class UserContainerController extends BaseController
         return prefix + "/insertContainer";
     }
 
+
+    /**
+     * 查询TempContainer正确的数据列表
+     * 获取过的数据将在temp表中删除
+     */
     @GetMapping("/test")
     @ResponseBody
     public List<UserContainer> getContainer()
@@ -45,6 +55,7 @@ public class UserContainerController extends BaseController
         for (UserContainer user : list
              ) {
             int i = userContainerService.insertUserContainer(user);
+            int i1 = containerService.deleteContainerByNum(user.getNum());
         }
         List<UserContainer> userContainers = userContainerService.selectUserContainerList(new UserContainer());
         return userContainers;

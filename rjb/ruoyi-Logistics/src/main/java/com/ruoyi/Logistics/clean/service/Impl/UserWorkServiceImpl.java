@@ -12,7 +12,7 @@ import com.ruoyi.common.core.text.Convert;
  * workService业务层处理
  * 
  * @author lyw
- * @date 2023-06-14
+ * @date 2023-06-16
  */
 @Service
 public class UserWorkServiceImpl implements IUserWorkService 
@@ -33,6 +33,17 @@ public class UserWorkServiceImpl implements IUserWorkService
     }
 
     /**
+     * 查询temp列表
+     *
+     * @param userWork work
+     * @return work集合
+     */
+    @Override
+    public List<UserWork> selectTempWorkList(UserWork userWork) {
+        return userWorkMapper.selectTempWorkList(userWork);
+    }
+
+    /**
      * 查询work列表
      * 
      * @param userWork work
@@ -42,17 +53,6 @@ public class UserWorkServiceImpl implements IUserWorkService
     public List<UserWork> selectUserWorkList(UserWork userWork)
     {
         return userWorkMapper.selectUserWorkList(userWork);
-    }
-
-    /**
-     * 查询tempwork列表
-     *
-     * @param userWork work
-     * @return work
-     */
-    @Override
-    public List<UserWork> selectTempWorkList(UserWork userWork) {
-        return userWorkMapper.selectTempWorkList(userWork);
     }
 
     /**

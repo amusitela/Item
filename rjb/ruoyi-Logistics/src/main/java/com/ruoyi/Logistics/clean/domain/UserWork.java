@@ -1,7 +1,5 @@
 package com.ruoyi.Logistics.clean.domain;
 
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -11,7 +9,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * work对象 USER_WORK
  * 
  * @author lyw
- * @date 2023-06-14
+ * @date 2023-06-16
  */
 public class UserWork extends BaseEntity
 {
@@ -30,24 +28,20 @@ public class UserWork extends BaseEntity
     private String shipName;
 
     /**  */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date ws;
+    @Excel(name = "")
+    private String ws;
 
     /**  */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date we;
+    @Excel(name = "")
+    private String we;
 
     /**  */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date start;
+    @Excel(name = "")
+    private String start;
 
     /**  */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date end;
+    @Excel(name = "")
+    private String end;
 
     /**  */
     @Excel(name = "")
@@ -104,39 +98,39 @@ public class UserWork extends BaseEntity
     {
         return shipName;
     }
-    public void setWs(Date ws) 
+    public void setWs(String ws) 
     {
         this.ws = ws;
     }
 
-    public Date getWs() 
+    public String getWs() 
     {
         return ws;
     }
-    public void setWe(Date we) 
+    public void setWe(String we) 
     {
         this.we = we;
     }
 
-    public Date getWe() 
+    public String getWe() 
     {
         return we;
     }
-    public void setStart(Date start) 
+    public void setStart(String start) 
     {
         this.start = start;
     }
 
-    public Date getStart() 
+    public String getStart() 
     {
         return start;
     }
-    public void setEnd(Date end) 
+    public void setEnd(String end) 
     {
         this.end = end;
     }
 
-    public Date getEnd() 
+    public String getEnd() 
     {
         return end;
     }

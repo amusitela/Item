@@ -1,11 +1,19 @@
 package com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
+
+import com.ruoyi.Logistics.clean.domain.Company;
+import com.ruoyi.Logistics.clean.service.ICompanyService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.Logistics.clean.domain.UserCompany;
@@ -19,7 +27,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * userCompanyController
  * 
  * @author lyw
- * @date 2023-06-14
+ * @date 2023-06-17
  */
 @Controller
 @RequestMapping("/clean/insertCompany")
@@ -30,6 +38,9 @@ public class UserCompanyController extends BaseController
     @Autowired
     private IUserCompanyService userCompanyService;
 
+    @Autowired
+    private ICompanyService companyService;
+
     @RequiresPermissions("clean:insertCompany:view")
     @GetMapping()
     public String insertCompany()
@@ -37,18 +48,39 @@ public class UserCompanyController extends BaseController
         return prefix + "/insertCompany";
     }
 
+    /**
+     * 获取TempCompany正确的数据列表
+     * 获取过的数据将在temp表中删除
+     */
     @GetMapping("/test")
     @ResponseBody
-    public List<UserCompany> GetDate()
+    public List<UserCompany> GetData()
     {
         List<UserCompany> userCompanies = userCompanyService.selectTempCompanyList(new UserCompany());
         for (UserCompany user:userCompanies
-             ) {
-            int i = userCompanyService.insertUserCompany(user);
+        ) {
+            //插入时也需要考虑到去重
+            if(userCompanyService.selectUserCompanyList(user) == null){
+                int i = userCompanyService.insertUserCompany(user);
+                int i1 = companyService.deleteCompanyByNum(user.getCompanyNum());
+            }else{
+                Company company = new Company();
+                company.setNum(user.getCompanyNum());
+                company.setCompanyName(user.getCompanyName());
+                company.setCustomerName(user.getCustomerNum());
+                company.setPersonName(user.getPersonName());
+                company.setPhone(user.getPhone());
+                company.setPhone(user.getPlace());
+                company.setError(1);
+                int i = companyService.updateCompany(company);
+            }
+
         }
         List<UserCompany> ans = userCompanyService.selectUserCompanyList(new UserCompany());
         return ans;
     }
+
+
 
     /**
      * 查询userCompany列表

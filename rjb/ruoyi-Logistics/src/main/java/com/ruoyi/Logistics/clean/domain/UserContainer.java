@@ -46,9 +46,8 @@ public class UserContainer extends BaseEntity
     private String status;
 
     /**  */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "", width = 30, dateFormat = "yyyy-MM-dd")
-    private Date date;
+    @Excel(name = "" )
+    private String date;
 
     public void setNum(Integer num) 
     {
@@ -113,12 +112,12 @@ public class UserContainer extends BaseEntity
     {
         return status;
     }
-    public void setDate(Date date) 
+    public void setDate(String date)
     {
         this.date = date;
     }
 
-    public Date getDate() 
+    public String getDate()
     {
         return date;
     }
@@ -137,3 +136,4 @@ public class UserContainer extends BaseEntity
             .toString();
     }
 }
+

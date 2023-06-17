@@ -1,6 +1,8 @@
 package com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
+
+import com.ruoyi.Logistics.clean.service.ILogisticsService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +32,9 @@ public class UserLogisticsController extends BaseController
     @Autowired
     private IUserLogisticsService userLogisticsService;
 
+    @Autowired
+    private ILogisticsService logisticsService;
+
     @RequiresPermissions("clean:insertLogistics:view")
     @GetMapping()
     public String insertLogistics()
@@ -39,6 +44,7 @@ public class UserLogisticsController extends BaseController
 
     /**
      * 查询获取Logistics正确数据
+     * 获取过的数据将在temp表中删除
      */
     @GetMapping("/test")
     @ResponseBody
@@ -48,6 +54,7 @@ public class UserLogisticsController extends BaseController
         for (UserLogistics user: list
              ) {
             int i = userLogisticsService.insertUserLogistics(user);
+            int i1 = logisticsService.deleteLogisticsByTNum(user.gettNum());
         }
         List<UserLogistics> userLogistics = userLogisticsService.selectUserLogisticsList(new UserLogistics());
         return userLogistics;
