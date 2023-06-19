@@ -19,7 +19,7 @@ public class GetTxt {
      */
 
     public static void main(String[] args) throws IOException, SQLException {
-        String filepath="C:\\Users\\18132\\Desktop\\34.txt";
+        String filepath="C:\\Users\\18132\\Desktop\\装货表.txt";
         txtToDB(filepath);
     }
     public static void txtToDB(String filepath) throws IOException, SQLException {

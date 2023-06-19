@@ -1,6 +1,8 @@
 package com.ruoyi.Logistics.clean.mapper;
 
 import java.util.List;
+
+import com.ruoyi.Logistics.clean.domain.Conditions;
 import com.ruoyi.Logistics.clean.domain.UserWork;
 
 /**
@@ -34,6 +36,15 @@ public interface UserWorkMapper
      * @return work集合
      */
     public List<UserWork> selectUserWorkList(UserWork userWork);
+
+    /**
+     * 查询港口吞吐量
+     *
+     * @param conditions
+     * @return Double
+     */
+    public Double selectPortThroughput(Conditions conditions);
+
 
     /**
      * 新增work

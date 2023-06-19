@@ -1,6 +1,8 @@
 package com.ruoyi.Logistics.clean.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.Logistics.clean.domain.Conditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.Logistics.clean.mapper.UserWorkMapper;
@@ -53,6 +55,11 @@ public class UserWorkServiceImpl implements IUserWorkService
     public List<UserWork> selectUserWorkList(UserWork userWork)
     {
         return userWorkMapper.selectUserWorkList(userWork);
+    }
+
+    @Override
+    public Double selectPortThroughput(Conditions conditions) {
+        return userWorkMapper.selectPortThroughput(conditions);
     }
 
     /**

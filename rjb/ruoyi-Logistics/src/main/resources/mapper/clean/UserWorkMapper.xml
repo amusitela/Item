@@ -21,9 +21,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="status"    column="操作"    />
     </resultMap>
 
+    <resultMap type="Conditions" id="ConditionsResult">
+        <result property="shipCompany"    column="船公司"    />
+        <result property="shipName"    column="船名称"    />
+        <result property="ws"    column="作业开始时间"    />
+        <result property="we"    column="作业结束时间"    />
+        <result property="start"    column="始发时间"    />
+        <result property="end"    column="到达时间"    />
+        <result property="port"    column="作业港口"    />
+        <result property="tNum"    column="提单号"    />
+        <result property="containerNum"    column="集装箱箱号"    />
+        <result property="goods"    column="货物名称"    />
+        <result property="cc"    column="箱尺寸（TEU）"    />
+        <result property="splace"    column="启运地"    />
+        <result property="eplace"    column="目的地"    />
+        <result property="status"    column="操作"    />
+        <result jdbcType="DOUBLE" column="total_amount" />
+    </resultMap>
+
     <sql id="selectUserWorkVo">
         select 作业号, 船公司, 船名称, 作业开始时间, 作业结束时间, 始发时间, 到达时间, 作业港口, 提单号, 集装箱箱号, "箱尺寸（TEU）", 启运地, 目的地, 操作 from USER_WORK
     </sql>
+
 
     <select id="selectUserWorkList" parameterType="UserWork" resultMap="UserWorkResult">
         <include refid="selectUserWorkVo"/>
@@ -51,6 +70,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
     <select id="selectTempWorkList" resultMap="UserWorkResult">
         select 作业号, 船公司, 船名称, 作业开始时间, 作业结束时间, 始发时间, 到达时间, 作业港口, 提单号, 集装箱箱号, "箱尺寸（TEU）", 启运地, 目的地, 操作 from TEMP_WORK where 异常 = 0
+    </select>
+    <select id="selectPortThroughput"  resultType="java.lang.Double">
+        select sum("货重（吨）") as total_amount from port_throughput_view
+        <where>
+            <if test="port != null  and port != ''"> 作业港口 = #{port}</if>
+            <if test="shipCompany != null  and shipCompany != ''"> and 船公司 = #{shipCompany}</if>
+            <if test="shipName != null  and shipName != ''"> and 船名称 = #{shipName}</if>
+            <if test="ws != null  and ws != ''"> and 作业开始时间 = #{ws}</if>
+            <if test="we != null  and we != ''"> and 作业结束时间 = #{we}</if>
+            <if test="start != null  and start != ''"> between 始发时间 = datetime #{start}</if>
+            <if test="end != null  and end != ''"> and datetime 到达时间 = #{end}</if>
+            <if test="goods != null  and goods != ''"> and 货物名称 = #{goods}</if>
+            <if test="tNum != null  and tNum != ''"> and 提单号 = #{tNum}</if>
+            <if test="splace != null  and splace != ''"> and 启运地 = #{splace}</if>
+            <if test="eplace != null  and eplace != ''"> and 目的地 = #{eplace}</if>
+            <if test="status != null "> and 操作 = #{status}</if>
+        </where>
     </select>
 
     <insert id="insertUserWork" parameterType="UserWork">
