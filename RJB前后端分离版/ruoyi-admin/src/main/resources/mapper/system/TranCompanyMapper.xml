@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TranCompanyMapper">
+    
+    <resultMap type="TranCompany" id="TranCompanyResult">
+        <result property="id"    column="id"    />
+        <result property="kuhuId"    column="kuhu_id"    />
+        <result property="name"    column="name"    />
+        <result property="contact"    column="contact"    />
+        <result property="phone"    column="phone"    />
+        <result property="address"    column="address"    />
+    </resultMap>
+
+    <sql id="selectTranCompanyVo">
+        select id, kuhu_id, name, contact, phone, address from tran_company
+    </sql>
+
+    <select id="selectTranCompanyList" parameterType="TranCompany" resultMap="TranCompanyResult">
+        <include refid="selectTranCompanyVo"/>
+        <where>  
+            <if test="kuhuId != null  and kuhuId != ''"> and kuhu_id = #{kuhuId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="address != null  and address != ''"> and address = #{address}</if>
+        </where>
+    </select>
+    
+    <select id="selectTranCompanyById" parameterType="Long" resultMap="TranCompanyResult">
+        <include refid="selectTranCompanyVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTranCompany" parameterType="TranCompany" useGeneratedKeys="true" keyProperty="id">
+        insert into tran_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="kuhuId != null">kuhu_id,</if>
+            <if test="name != null">name,</if>
+            <if test="contact != null">contact,</if>
+            <if test="phone != null">phone,</if>
+            <if test="address != null">address,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="kuhuId != null">#{kuhuId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="address != null">#{address},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTranCompany" parameterType="TranCompany">
+        update tran_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="kuhuId != null">kuhu_id = #{kuhuId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="address != null">address = #{address},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTranCompanyById" parameterType="Long">
+        delete from tran_company where id = #{id}
+    </delete>
+
+    <delete id="deleteTranCompanyByIds" parameterType="String">
+        delete from tran_company where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

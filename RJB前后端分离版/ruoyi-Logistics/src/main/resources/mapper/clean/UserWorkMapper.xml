@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.Logistics.clean.mapper.UserWorkMapper">
+    
+    <resultMap type="UserWork" id="UserWorkResult">
+        <result property="num"    column="作业号"    />
+        <result property="shipCompany"    column="船公司"    />
+        <result property="shipName"    column="船名称"    />
+        <result property="ws"    column="作业开始时间"    />
+        <result property="we"    column="作业结束时间"    />
+        <result property="start"    column="始发时间"    />
+        <result property="end"    column="到达时间"    />
+        <result property="port"    column="作业港口"    />
+        <result property="tNum"    column="提单号"    />
+        <result property="containerNum"    column="集装箱箱号"    />
+        <result property="cc"    column="箱尺寸（TEU）"    />
+        <result property="splace"    column="启运地"    />
+        <result property="eplace"    column="目的地"    />
+        <result property="status"    column="操作"    />
+    </resultMap>
+
+    <resultMap type="Conditions" id="ConditionsResult">
+        <result property="shipCompany"    column="船公司"    />
+        <result property="shipName"    column="船名称"    />
+        <result property="ws"    column="作业开始时间"    />
+        <result property="we"    column="作业结束时间"    />
+        <result property="start"    column="始发时间"    />
+        <result property="end"    column="到达时间"    />
+        <result property="port"    column="作业港口"    />
+        <result property="tNum"    column="提单号"    />
+        <result property="containerNum"    column="集装箱箱号"    />
+        <result property="goods"    column="货物名称"    />
+        <result property="cc"    column="箱尺寸（TEU）"    />
+        <result property="splace"    column="启运地"    />
+        <result property="eplace"    column="目的地"    />
+        <result property="status"    column="操作"    />
+        <result property="date"    column="now"    />
+        <result property="total" column="总重（吨）" />
+    </resultMap>
+
+    <resultMap id="goodsMap" type="Goods">
+        <result property="start"    column="启运地"    />
+        <result property="end"    column="目的地"    />
+        <result property="goods" column="货物名称"/>
+    </resultMap>
+
+
+
+
+    <sql id="selectUserWorkVo">
+        select 作业号, 船公司, 船名称, 作业开始时间, 作业结束时间, 始发时间, 到达时间, 作业港口, 提单号, 集装箱箱号, "箱尺寸（TEU）", 启运地, 目的地, 操作 from USER_WORK
+    </sql>
+
+
+    <select id="selectUserWorkList" parameterType="UserWork" resultMap="UserWorkResult">
+        <include refid="selectUserWorkVo"/>
+        <where>  
+            <if test="num != null "> and 作业号 = #{num}</if>
+            <if test="shipCompany != null  and shipCompany != ''"> and 船公司 = #{shipCompany}</if>
+            <if test="shipName != null  and shipName != ''"> and 船名称 = #{shipName}</if>
+            <if test="ws != null  and ws != ''"> and 作业开始时间 = #{ws}</if>
+            <if test="we != null  and we != ''"> and 作业结束时间 = #{we}</if>
+            <if test="start != null  and start != ''"> and 始发时间 = #{start}</if>
+            <if test="end != null  and end != ''"> and 到达时间 = #{end}</if>
+            <if test="port != null  and port != ''"> and 作业港口 = #{port}</if>
+            <if test="tNum != null  and tNum != ''"> and 提单号 = #{tNum}</if>
+            <if test="containerNum != null  and containerNum != ''"> and 集装箱箱号 = #{containerNum}</if>
+            <if test="cc != null  and cc != ''"> and "箱尺寸（TEU）" = #{cc}</if>
+            <if test="splace != null  and splace != ''"> and 启运地 = #{splace}</if>
+            <if test="eplace != null  and eplace != ''"> and 目的地 = #{eplace}</if>
+            <if test="status != null "> and 操作 = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserWorkByNum" parameterType="Integer" resultMap="UserWorkResult">
+        <include refid="selectUserWorkVo"/>
+        where 作业号 = #{num}
+    </select>
+    <select id="selectTempWorkList" resultMap="UserWorkResult">
+        select 作业号, 船公司, 船名称, 作业开始时间, 作业结束时间, 始发时间, 到达时间, 作业港口, 提单号, 集装箱箱号, "箱尺寸（TEU）", 启运地, 目的地, 操作 from TEMP_WORK where 异常 = 0
+    </select>
+
+
+    <select id="selectPortThroughput"  parameterType="Conditions" resultType="Map">
+        select
+        "作业港口",
+        sum("货重（吨）") as 总重
+        from port_throughput_view
+        <where>
+            <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
+            <if test="conditions.shipCompany != null  and conditions.shipCompany != ''"> and 船公司 = #{conditions.shipCompany}</if>
+            <if test="conditions.shipName != null  and conditions.shipName != ''"> and 船名称 = #{conditions.shipName}</if>
+            <if test="conditions.ws != null  and conditions.ws != ''"> and 作业开始时间 = #{conditions.ws}</if>
+            <if test="conditions.we != null  and conditions.we != ''"> and 作业结束时间 = #{conditions.we}</if>
+            <if test="conditions.start != null  and conditions.start != ''"> between 始发时间 = datetime #{conditions.start}</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end}</if>
+            <if test="conditions.goods != null  and conditions.goods != ''"> and 货物名称 = #{conditions.goods}</if>
+            <if test="conditions.tNum != null  and conditions.tNum != ''"> and 提单号 = #{conditions.tNum}</if>
+            <if test="conditions.splace != null  and conditions.splace != ''"> and 启运地 = #{conditions.splace}</if>
+            <if test="conditions.eplace != null  and conditions.eplace != ''"> and 目的地 = #{conditions.eplace}</if>
+            <if test="conditions.status != null "> and 操作 = #{conditions.status}</if>
+        </where>
+        group by 作业港口
+        order by 总重 desc
+    </select>
+
+    <select id="selectGoodsThroughput"  parameterType="Conditions" resultType="Map">
+        select
+        "货物名称",
+        sum("货重（吨）") as 总重
+        from port_throughput_view
+        <where>
+            <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
+            <if test="conditions.shipCompany != null  and conditions.shipCompany != ''"> and 船公司 = #{conditions.shipCompany}</if>
+            <if test="conditions.shipName != null  and conditions.shipName != ''"> and 船名称 = #{conditions.shipName}</if>
+            <if test="conditions.ws != null  and conditions.ws != ''"> and 作业开始时间 = #{conditions.ws}</if>
+            <if test="conditions.we != null  and conditions.we != ''"> and 作业结束时间 = #{conditions.we}</if>
+            <if test="conditions.start != null  and conditions.start != ''"> between 始发时间 = datetime #{conditions.start}</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end}</if>
+            <if test="conditions.goods != null  and conditions.goods != ''"> and 货物名称 = #{conditions.goods}</if>
+            <if test="conditions.tNum != null  and conditions.tNum != ''"> and 提单号 = #{conditions.tNum}</if>
+            <if test="conditions.splace != null  and conditions.splace != ''"> and 启运地 = #{conditions.splace}</if>
+            <if test="conditions.eplace != null  and conditions.eplace != ''"> and 目的地 = #{conditions.eplace}</if>
+            <if test="conditions.status != null "> and 操作 = #{conditions.status}</if>
+        </where>
+        group by 货物名称
+        order by 总重 desc
+    </select>
+
+    <select id="selectAllThroughput"  resultType="java.lang.Double">
+        select
+        sum("货重（吨）") as 总重
+        from port_throughput_view
+        <where>
+            <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
+            <if test="conditions.shipCompany != null  and conditions.shipCompany != ''"> and 船公司 = #{conditions.shipCompany}</if>
+            <if test="conditions.shipName != null  and conditions.shipName != ''"> and 船名称 = #{conditions.shipName}</if>
+            <if test="conditions.ws != null  and conditions.ws != ''"> and 作业开始时间 = #{conditions.ws}</if>
+            <if test="conditions.we != null  and conditions.we != ''"> and 作业结束时间 = #{conditions.we}</if>
+            <if test="conditions.start != null  and conditions.start != ''"> between 始发时间 = datetime #{conditions.start}</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end}</if>
+            <if test="conditions.goods != null  and conditions.goods != ''"> and 货物名称 = #{conditions.goods}</if>
+            <if test="conditions.tNum != null  and conditions.tNum != ''"> and 提单号 = #{conditions.tNum}</if>
+            <if test="conditions.splace != null  and conditions.splace != ''"> and 启运地 = #{conditions.splace}</if>
+            <if test="conditions.eplace != null  and conditions.eplace != ''"> and 目的地 = #{conditions.eplace}</if>
+            <if test="conditions.status != null "> and 操作 = #{conditions.status}</if>
+        </where>
+    </select>
+
+
+<!--    <select id="selectTONGBI" resultType="java.lang.Double">
+    SELECT
+        SUM("货重（吨）") AS "总重（吨）"
+    FROM
+        port_throughput_view
+    where 作业港口= #{port}
+    GROUP BY
+        DATE_FORMAT(始发时间,'%Y-%m')
+    HAVING
+       DATE_FORMAT(始发时间,'%Y-%m') = #{year} OR DATE_FORMAT(始发时间,'%Y-%m') = #{lastyear};
+    </select>-->
+
+    <select id="selectRIQU" parameterType="Conditions" resultType="Map">
+        SELECT
+        DATE_FORMAT(始发时间,'%Y-%m-%d') as "now",
+        SUM("货重（吨）") AS 总重
+        FROM
+        port_throughput_view
+        <where>
+            <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
+            <if test="conditions.goods!=null and conditions.goods!='' ">and 货物名称 = #{conditions.goods}</if>
+            <if test="conditions.start != null  and conditions.start != ''">and between 始发时间 = datetime #{conditions.start}</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end} </if>
+        </where>
+        GROUP BY
+        DATE_FORMAT(始发时间,'%Y-%m-%d')
+        order by
+        DATE_FORMAT(始发时间,'%Y-%m-%d')
+    </select>
+
+    <select id="selectTONGBI"  parameterType="Conditions" resultType="Map">
+        SELECT
+        DATE_FORMAT(始发时间,'%Y-%m')as "now",
+        SUM("货重（吨）") AS 总重
+        FROM
+        port_throughput_view
+        <where>
+            <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
+            <if test="conditions.goods!=null and conditions.goods!='' ">and 货物名称 = #{conditions.goods}</if>
+            <if test="conditions.start != null  and conditions.start != ''">and between 始发时间 = datetime #{conditions.start}</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end} </if>
+        </where>
+        GROUP BY
+        now
+        ORDER BY
+        now
+
+    </select>
+
+    <select id="selectGoodsGoWhere"  parameterType="Conditions" resultMap="goodsMap">
+        SELECT
+        distinct 货物名称,启运地,目的地
+        FROM
+        port_throughput_view
+        <where>
+            <if test="conditions.port != null  and conditions.port != ''"> 启运地 = #{conditions.port}</if>
+            <if test="conditions.goods!=null and conditions.goods!='' ">and 货物名称 = #{conditions.goods}</if>
+            <if test="conditions.start != null  and conditions.start != ''">and between 始发时间 = datetime #{conditions.start}</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end} </if>
+        </where>
+        order by 作业港口
+    </select>
+
+    <insert id="insertUserWork" parameterType="UserWork">
+        insert into USER_WORK
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num != null">作业号,</if>
+            <if test="shipCompany != null">船公司,</if>
+            <if test="shipName != null">船名称,</if>
+            <if test="ws != null">作业开始时间,</if>
+            <if test="we != null">作业结束时间,</if>
+            <if test="start != null">始发时间,</if>
+            <if test="end != null">到达时间,</if>
+            <if test="port != null">作业港口,</if>
+            <if test="tNum != null">提单号,</if>
+            <if test="containerNum != null">集装箱箱号,</if>
+            <if test="cc != null">"箱尺寸（TEU）",</if>
+            <if test="splace != null">启运地,</if>
+            <if test="eplace != null">目的地,</if>
+            <if test="status != null">操作,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="num != null">#{num},</if>
+            <if test="shipCompany != null">#{shipCompany},</if>
+            <if test="shipName != null">#{shipName},</if>
+            <if test="ws != null">#{ws},</if>
+            <if test="we != null">#{we},</if>
+            <if test="start != null">#{start},</if>
+            <if test="end != null">#{end},</if>
+            <if test="port != null">#{port},</if>
+            <if test="tNum != null">#{tNum},</if>
+            <if test="containerNum != null">#{containerNum},</if>
+            <if test="cc != null">#{cc},</if>
+            <if test="splace != null">#{splace},</if>
+            <if test="eplace != null">#{eplace},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserWork" parameterType="UserWork">
+        update USER_WORK
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shipCompany != null">船公司 = #{shipCompany},</if>
+            <if test="shipName != null">船名称 = #{shipName},</if>
+            <if test="ws != null">作业开始时间 = #{ws},</if>
+            <if test="we != null">作业结束时间 = #{we},</if>
+            <if test="start != null">始发时间 = #{start},</if>
+            <if test="end != null">到达时间 = #{end},</if>
+            <if test="port != null">作业港口 = #{port},</if>
+            <if test="tNum != null">提单号 = #{tNum},</if>
+            <if test="containerNum != null">集装箱箱号 = #{containerNum},</if>
+            <if test="cc != null">"箱尺寸（TEU）" = #{cc},</if>
+            <if test="splace != null">启运地 = #{splace},</if>
+            <if test="eplace != null">目的地 = #{eplace},</if>
+            <if test="status != null">操作 = #{status},</if>
+        </trim>
+        where 作业号 = #{num}
+    </update>
+
+    <delete id="deleteUserWorkByNum" parameterType="Integer">
+        delete from USER_WORK where 作业号 = #{num}
+    </delete>
+
+    <delete id="deleteUserWorkByNums" parameterType="String">
+        delete from USER_WORK where 作业号 in 
+        <foreach item="num" collection="array" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.Logistics.clean.mapper.ContainerMapper">
+    
+    <resultMap type="Container" id="ContainerResult">
+        <result property="num"    column="流水号"    />
+        <result property="port"    column="堆存港口"    />
+        <result property="containerNum"    column="集装箱箱号"    />
+        <result property="cc"    column="箱尺寸（TEU）"    />
+        <result property="tNum"    column="提单号"    />
+        <result property="CPlace"    column="堆场位置"    />
+        <result property="status"    column="操作"    />
+        <result property="date"    column="操作日期"    />
+        <result property="error"    column="异常"    />
+    </resultMap>
+
+    <sql id="selectContainerVo">
+        select 流水号, 堆存港口, 集装箱箱号, "箱尺寸（TEU）", 提单号, 堆场位置, 操作, 操作日期, 异常 from TEMP_集装箱动态
+    </sql>
+
+    <select id="selectContainerList" parameterType="Container" resultMap="ContainerResult">
+        <include refid="selectContainerVo"/>
+        <where>  
+            <if test="num != null "> and 流水号 = #{num}</if>
+            <if test="port != null  and port != ''"> and 堆存港口 = #{port}</if>
+            <if test="containerNum != null  and containerNum != ''"> and 集装箱箱号 = #{containerNum}</if>
+            <if test="cc != null  and cc != ''"> and "箱尺寸（TEU）" = #{cc}</if>
+            <if test="tNum != null  and tNum != ''"> and 提单号 = #{tNum}</if>
+            <if test="CPlace != null  and CPlace != ''"> and 堆场位置 = #{CPlace}</if>
+            <if test="status != null  and status != ''"> and 操作 = #{status}</if>
+            <if test="date != null "> and 操作日期 = #{date}</if>
+            <if test="error != null "> and 异常 = #{error}</if>
+        </where>
+    </select>
+    
+    <select id="selectContainerByNum" parameterType="Integer" resultMap="ContainerResult">
+        <include refid="selectContainerVo"/>
+        where 流水号 = #{num}
+    </select>
+        
+    <insert id="insertContainer" parameterType="Container">
+        insert into TEMP_集装箱动态
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num != null">流水号,</if>
+            <if test="port != null">堆存港口,</if>
+            <if test="containerNum != null">集装箱箱号,</if>
+            <if test="cc != null">"箱尺寸（TEU）",</if>
+            <if test="tNum != null">提单号,</if>
+            <if test="CPlace != null">堆场位置,</if>
+            <if test="status != null">操作,</if>
+            <if test="date != null">操作日期,</if>
+            <if test="error != null">异常,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="num != null">#{num},</if>
+            <if test="port != null">#{port},</if>
+            <if test="containerNum != null">#{containerNum},</if>
+            <if test="cc != null">#{cc},</if>
+            <if test="tNum != null">#{tNum},</if>
+            <if test="CPlace != null">#{CPlace},</if>
+            <if test="status != null">#{status},</if>
+            <if test="date != null">#{date},</if>
+            <if test="error != null">#{error},</if>
+         </trim>
+    </insert>
+
+    <update id="updateContainer" parameterType="Container">
+        update TEMP_集装箱动态
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="port != null">堆存港口 = #{port},</if>
+            <if test="containerNum != null">集装箱箱号 = #{containerNum},</if>
+            <if test="cc != null">"箱尺寸（TEU）" = #{cc},</if>
+            <if test="tNum != null">提单号 = #{tNum},</if>
+            <if test="CPlace != null">堆场位置 = #{CPlace},</if>
+            <if test="status != null">操作 = #{status},</if>
+            <if test="date != null">操作日期 = #{date},</if>
+            <if test="error != null">异常 = #{error},</if>
+        </trim>
+        where 流水号 = #{num}
+    </update>
+
+    <delete id="deleteContainerByNum" parameterType="Integer">
+        delete from TEMP_集装箱动态 where 流水号 = #{num}
+    </delete>
+
+    <delete id="deleteContainerByNums" parameterType="String">
+        delete from TEMP_集装箱动态 where 流水号 in 
+        <foreach item="num" collection="array" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+    </delete>
+
+</mapper>

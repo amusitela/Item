@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TranTrendsMapper">
+    
+    <resultMap type="TranTrends" id="TranTrendsResult">
+        <result property="id"    column="id"    />
+        <result property="port"    column="port"    />
+        <result property="boxNum"    column="box_num"    />
+        <result property="boxSize"    column="box_size"    />
+        <result property="num"    column="num"    />
+        <result property="position"    column="position"    />
+        <result property="operate"    column="operate"    />
+        <result property="time"    column="time"    />
+    </resultMap>
+
+    <sql id="selectTranTrendsVo">
+        select id, port, box_num, box_size, num, position, operate, time from tran_trends
+    </sql>
+
+    <select id="selectTranTrendsList" parameterType="TranTrends" resultMap="TranTrendsResult">
+        <include refid="selectTranTrendsVo"/>
+        <where>  
+            <if test="port != null  and port != ''"> and port = #{port}</if>
+            <if test="boxNum != null  and boxNum != ''"> and box_num = #{boxNum}</if>
+            <if test="boxSize != null "> and box_size = #{boxSize}</if>
+            <if test="num != null  and num != ''"> and num = #{num}</if>
+            <if test="position != null  and position != ''"> and position = #{position}</if>
+            <if test="operate != null  and operate != ''"> and operate = #{operate}</if>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+        </where>
+    </select>
+    
+    <select id="selectTranTrendsById" parameterType="Long" resultMap="TranTrendsResult">
+        <include refid="selectTranTrendsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTranTrends" parameterType="TranTrends">
+        insert into tran_trends
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="port != null">port,</if>
+            <if test="boxNum != null">box_num,</if>
+            <if test="boxSize != null">box_size,</if>
+            <if test="num != null">num,</if>
+            <if test="position != null">position,</if>
+            <if test="operate != null">operate,</if>
+            <if test="time != null">time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="port != null">#{port},</if>
+            <if test="boxNum != null">#{boxNum},</if>
+            <if test="boxSize != null">#{boxSize},</if>
+            <if test="num != null">#{num},</if>
+            <if test="position != null">#{position},</if>
+            <if test="operate != null">#{operate},</if>
+            <if test="time != null">#{time},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTranTrends" parameterType="TranTrends">
+        update tran_trends
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="port != null">port = #{port},</if>
+            <if test="boxNum != null">box_num = #{boxNum},</if>
+            <if test="boxSize != null">box_size = #{boxSize},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="operate != null">operate = #{operate},</if>
+            <if test="time != null">time = #{time},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTranTrendsById" parameterType="Long">
+        delete from tran_trends where id = #{id}
+    </delete>
+
+    <delete id="deleteTranTrendsByIds" parameterType="String">
+        delete from tran_trends where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

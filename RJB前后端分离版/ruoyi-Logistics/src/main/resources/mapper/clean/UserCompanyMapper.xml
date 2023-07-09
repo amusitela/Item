@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.Logistics.clean.mapper.UserCompanyMapper">
+    
+    <resultMap type="UserCompany" id="UserCompanyResult">
+        <result property="companyNum"    column="公司号"    />
+        <result property="companyName"    column="公司名称"    />
+        <result property="customerNum"    column="客户编号"    />
+        <result property="personName"    column="联系人"    />
+        <result property="phone"    column="电话"    />
+        <result property="place"    column="省市区"    />
+    </resultMap>
+
+    <sql id="selectUserCompanyVo">
+        select 公司号, 公司名称, 客户编号, 联系人, 电话, 省市区 from USER_物流公司
+    </sql>
+
+    <select id="selectUserCompanyList" parameterType="UserCompany" resultMap="UserCompanyResult">
+        <include refid="selectUserCompanyVo"/>
+        <where>  
+            <if test="companyNum != null "> and 公司号 = #{companyNum}</if>
+            <if test="companyName != null  and companyName != ''"> and 公司名称 = #{companyName}</if>
+            <if test="customerNum != null  and customerNum != ''"> and 客户编号 = #{customerNum}</if>
+            <if test="personName != null  and personName != ''"> and 联系人 = #{personName}</if>
+            <if test="phone != null  and phone != ''"> and 电话 = #{phone}</if>
+            <if test="place != null  and place != ''"> and 省市区 = #{place}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserCompanyByCompanyNum" parameterType="Integer" resultMap="UserCompanyResult">
+        <include refid="selectUserCompanyVo"/>
+        where 公司号 = #{companyNum}
+    </select>
+    <select id="selectTempCompanyList" resultMap="UserCompanyResult">
+        select 公司号,公司名称,客户编号,联系人,电话,省市区 from temp_物流公司 where 异常=0
+    </select>
+
+
+    <insert id="insertUserCompany" parameterType="UserCompany">
+        insert into USER_物流公司
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyNum != null">公司号,</if>
+            <if test="companyName != null">公司名称,</if>
+            <if test="customerNum != null">客户编号,</if>
+            <if test="personName != null">联系人,</if>
+            <if test="phone != null">电话,</if>
+            <if test="place != null">省市区,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyNum != null">#{companyNum},</if>
+            <if test="companyName != null">#{companyName},</if>
+            <if test="customerNum != null">#{customerNum},</if>
+            <if test="personName != null">#{personName},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="place != null">#{place},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserCompany" parameterType="UserCompany">
+        update USER_物流公司
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyName != null">公司名称 = #{companyName},</if>
+            <if test="customerNum != null">客户编号 = #{customerNum},</if>
+            <if test="personName != null">联系人 = #{personName},</if>
+            <if test="phone != null">电话 = #{phone},</if>
+            <if test="place != null">省市区 = #{place},</if>
+        </trim>
+        where 公司号 = #{companyNum}
+    </update>
+
+    <delete id="deleteUserCompanyByCompanyNum" parameterType="Integer">
+        delete from USER_物流公司 where 公司号 = #{companyNum}
+    </delete>
+
+    <delete id="deleteUserCompanyByCompanyNums" parameterType="String">
+        delete from USER_物流公司 where 公司号 in 
+        <foreach item="companyNum" collection="array" open="(" separator="," close=")">
+            #{companyNum}
+        </foreach>
+    </delete>
+
+</mapper>

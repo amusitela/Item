@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TranInfoMapper">
+    
+    <resultMap type="TranInfo" id="TranInfoResult">
+        <result property="id"    column="id"    />
+        <result property="owner"    column="owner"    />
+        <result property="ownerNum"    column="owner_num"    />
+        <result property="tranCompany"    column="tran_company"    />
+        <result property="boxNum"    column="box_num"    />
+        <result property="goods"    column="goods"    />
+        <result property="weight"    column="weight"    />
+    </resultMap>
+
+    <sql id="selectTranInfoVo">
+        select id, owner, owner_num, tran_company, box_num, goods, weight from tran_info
+    </sql>
+
+    <select id="selectTranInfoList" parameterType="TranInfo" resultMap="TranInfoResult">
+        <include refid="selectTranInfoVo"/>
+        <where>  
+            <if test="owner != null  and owner != ''"> and owner = #{owner}</if>
+            <if test="ownerNum != null  and ownerNum != ''"> and owner_num = #{ownerNum}</if>
+            <if test="tranCompany != null  and tranCompany != ''"> and tran_company = #{tranCompany}</if>
+            <if test="boxNum != null  and boxNum != ''"> and box_num = #{boxNum}</if>
+            <if test="goods != null  and goods != ''"> and goods = #{goods}</if>
+            <if test="weight != null "> and weight = #{weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectTranInfoById" parameterType="String" resultMap="TranInfoResult">
+        <include refid="selectTranInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTranInfo" parameterType="TranInfo">
+        insert into tran_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="owner != null">owner,</if>
+            <if test="ownerNum != null">owner_num,</if>
+            <if test="tranCompany != null">tran_company,</if>
+            <if test="boxNum != null">box_num,</if>
+            <if test="goods != null">goods,</if>
+            <if test="weight != null">weight,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="owner != null">#{owner},</if>
+            <if test="ownerNum != null">#{ownerNum},</if>
+            <if test="tranCompany != null">#{tranCompany},</if>
+            <if test="boxNum != null">#{boxNum},</if>
+            <if test="goods != null">#{goods},</if>
+            <if test="weight != null">#{weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTranInfo" parameterType="TranInfo">
+        update tran_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="owner != null">owner = #{owner},</if>
+            <if test="ownerNum != null">owner_num = #{ownerNum},</if>
+            <if test="tranCompany != null">tran_company = #{tranCompany},</if>
+            <if test="boxNum != null">box_num = #{boxNum},</if>
+            <if test="goods != null">goods = #{goods},</if>
+            <if test="weight != null">weight = #{weight},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTranInfoById" parameterType="String">
+        delete from tran_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTranInfoByIds" parameterType="String">
+        delete from tran_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

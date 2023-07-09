@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.Logistics.clean.mapper.UserLogisticsMapper">
+    
+    <resultMap type="UserLogistics" id="UserLogisticsResult">
+        <result property="tNum"    column="提单号"    />
+        <result property="name"    column="货主名称"    />
+        <result property="num"    column="货主代码"    />
+        <result property="company"    column="物流公司（货代）"    />
+        <result property="containerNum"    column="集装箱箱号"    />
+        <result property="goods"    column="货物名称"    />
+        <result property="weight"    column="货重（吨）"    />
+    </resultMap>
+
+    <sql id="selectUserLogisticsVo">
+    select 提单号, 货主名称, 货主代码, "物流公司（货代）" , 集装箱箱号, 货物名称, "货重（吨）" from USER_物流信息
+    </sql>
+
+    <select id="selectUserLogisticsList" parameterType="UserLogistics" resultMap="UserLogisticsResult">
+        <include refid="selectUserLogisticsVo"/>
+        <where>  
+            <if test="tNum != null  and tNum != ''"> and 提单号 = #{tNum}</if>
+            <if test="name != null  and name != ''"> and 货主名称 = #{name}</if>
+            <if test="num != null  and num != ''"> and 货主代码 = #{num}</if>
+            <if test="company != null  and company != ''"> and  "物流公司（货代）"= #{company}</if>
+            <if test="containerNum != null  and containerNum != ''"> and 集装箱箱号 = #{containerNum}</if>
+            <if test="goods != null  and goods != ''"> and 货物名称 = #{goods}</if>
+            <if test="weight != null  and weight != ''"> and  "货重（吨） " = #{weight}</if>
+        </where>
+    </select>
+    
+    <select id="selectUserLogisticsByTNum" parameterType="String" resultMap="UserLogisticsResult">
+        <include refid="selectUserLogisticsVo"/>
+        where 提单号 = #{tNum}
+    </select>
+    <select id="selectTempLogisticsList" resultMap="UserLogisticsResult">
+        select 提单号,货主名称,货主代码,"物流公司（货代）",集装箱箱号,货物名称,"货重（吨）" from temp_物流信息 where 异常 = 0
+    </select>
+
+    <insert id="insertUserLogistics" parameterType="UserLogistics">
+        insert into USER_物流信息
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tNum != null and tNum != ''">提单号,</if>
+            <if test="name != null">货主名称,</if>
+            <if test="num != null">货主代码,</if>
+            <if test="company != null"> "物流公司（货代）",</if>
+            <if test="containerNum != null">集装箱箱号,</if>
+            <if test="goods != null">货物名称,</if>
+            <if test="weight != null"> "货重（吨）",</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tNum != null and tNum != ''">#{tNum},</if>
+            <if test="name != null">#{name},</if>
+            <if test="num != null">#{num},</if>
+            <if test="company != null">#{company},</if>
+            <if test="containerNum != null">#{containerNum},</if>
+            <if test="goods != null">#{goods},</if>
+            <if test="weight != null">#{weight},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUserLogistics" parameterType="UserLogistics">
+        update USER_物流信息
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">货主名称 = #{name},</if>
+            <if test="num != null">货主代码 = #{num},</if>
+            <if test="company != null"> "物流公司（货代）"= #{company},</if>
+            <if test="containerNum != null">集装箱箱号 = #{containerNum},</if>
+            <if test="goods != null">货物名称 = #{goods},</if>
+            <if test="weight != null"> "货重（吨）" = #{weight},</if>
+        </trim>
+        where 提单号 = #{tNum}
+    </update>
+
+    <delete id="deleteUserLogisticsByTNum" parameterType="String">
+        delete from USER_物流信息 where 提单号 = #{tNum}
+    </delete>
+
+    <delete id="deleteUserLogisticsByTNums" parameterType="String">
+        delete from USER_物流信息 where 提单号 in 
+        <foreach item="tNum" collection="array" open="(" separator="," close=")">
+            #{tNum}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TranLoadingMapper">
+    
+    <resultMap type="TranLoading" id="TranLoadingResult">
+        <result property="boatname"    column="boatname"    />
+        <result property="begining"    column="begining"    />
+        <result property="ending"    column="ending"    />
+        <result property="origintime"    column="origintime"    />
+        <result property="arrivetime"    column="arrivetime"    />
+        <result property="workport"    column="workport"    />
+        <result property="ladnum"    column="ladnum"    />
+        <result property="boxnum"    column="boxnum"    />
+        <result property="boxsize"    column="boxsize"    />
+        <result property="originaddress"    column="originaddress"    />
+        <result property="destination"    column="destination"    />
+        <result property="boatcompany"    column="boatcompany"    />
+        <result property="id"    column="id"    />
+    </resultMap>
+
+    <sql id="selectTranLoadingVo">
+        select boatname, begining, ending, origintime, arrivetime, workport, ladnum, boxnum, boxsize, originaddress, destination, boatcompany, id from tran_loading
+    </sql>
+
+    <select id="selectTranLoadingList" parameterType="TranLoading" resultMap="TranLoadingResult">
+        <include refid="selectTranLoadingVo"/>
+        <where>  
+            <if test="boatname != null  and boatname != ''"> and boatname like concat('%', #{boatname}, '%')</if>
+            <if test="begining != null  and begining != ''"> and begining = #{begining}</if>
+            <if test="ending != null  and ending != ''"> and ending = #{ending}</if>
+            <if test="origintime != null  and origintime != ''"> and origintime = #{origintime}</if>
+            <if test="arrivetime != null  and arrivetime != ''"> and arrivetime = #{arrivetime}</if>
+            <if test="workport != null  and workport != ''"> and workport = #{workport}</if>
+            <if test="ladnum != null  and ladnum != ''"> and ladnum = #{ladnum}</if>
+            <if test="boxnum != null  and boxnum != ''"> and boxnum = #{boxnum}</if>
+            <if test="boxsize != null "> and boxsize = #{boxsize}</if>
+            <if test="originaddress != null  and originaddress != ''"> and originaddress = #{originaddress}</if>
+            <if test="destination != null  and destination != ''"> and destination = #{destination}</if>
+            <if test="boatcompany != null  and boatcompany != ''"> and boatcompany = #{boatcompany}</if>
+        </where>
+    </select>
+    
+    <select id="selectTranLoadingById" parameterType="Long" resultMap="TranLoadingResult">
+        <include refid="selectTranLoadingVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTranLoading" parameterType="TranLoading" useGeneratedKeys="true" keyProperty="id">
+        insert into tran_loading
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boatname != null">boatname,</if>
+            <if test="begining != null">begining,</if>
+            <if test="ending != null">ending,</if>
+            <if test="origintime != null">origintime,</if>
+            <if test="arrivetime != null">arrivetime,</if>
+            <if test="workport != null">workport,</if>
+            <if test="ladnum != null">ladnum,</if>
+            <if test="boxnum != null">boxnum,</if>
+            <if test="boxsize != null">boxsize,</if>
+            <if test="originaddress != null">originaddress,</if>
+            <if test="destination != null">destination,</if>
+            <if test="boatcompany != null">boatcompany,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boatname != null">#{boatname},</if>
+            <if test="begining != null">#{begining},</if>
+            <if test="ending != null">#{ending},</if>
+            <if test="origintime != null">#{origintime},</if>
+            <if test="arrivetime != null">#{arrivetime},</if>
+            <if test="workport != null">#{workport},</if>
+            <if test="ladnum != null">#{ladnum},</if>
+            <if test="boxnum != null">#{boxnum},</if>
+            <if test="boxsize != null">#{boxsize},</if>
+            <if test="originaddress != null">#{originaddress},</if>
+            <if test="destination != null">#{destination},</if>
+            <if test="boatcompany != null">#{boatcompany},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTranLoading" parameterType="TranLoading">
+        update tran_loading
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boatname != null">boatname = #{boatname},</if>
+            <if test="begining != null">begining = #{begining},</if>
+            <if test="ending != null">ending = #{ending},</if>
+            <if test="origintime != null">origintime = #{origintime},</if>
+            <if test="arrivetime != null">arrivetime = #{arrivetime},</if>
+            <if test="workport != null">workport = #{workport},</if>
+            <if test="ladnum != null">ladnum = #{ladnum},</if>
+            <if test="boxnum != null">boxnum = #{boxnum},</if>
+            <if test="boxsize != null">boxsize = #{boxsize},</if>
+            <if test="originaddress != null">originaddress = #{originaddress},</if>
+            <if test="destination != null">destination = #{destination},</if>
+            <if test="boatcompany != null">boatcompany = #{boatcompany},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTranLoadingById" parameterType="Long">
+        delete from tran_loading where id = #{id}
+    </delete>
+
+    <delete id="deleteTranLoadingByIds" parameterType="String">
+        delete from tran_loading where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

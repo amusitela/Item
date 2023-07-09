@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.Logistics.clean.mapper.CustomerMapper">
+    
+    <resultMap type="Customer" id="CustomerResult">
+        <result property="num"    column="客户编号"    />
+        <result property="name"    column="客户名称"    />
+        <result property="phone"    column="手机号"    />
+        <result property="place"    column="省市区"    />
+        <result property="error"    column="异常"    />
+    </resultMap>
+
+    <sql id="selectCustomerVo">
+        select 客户编号, 客户名称, 手机号, 省市区, 异常 from TEMP_客户信息
+    </sql>
+
+    <select id="selectCustomerList" parameterType="Customer" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        <where>  
+            <if test="num != null  and num != ''"> and 客户编号 = #{num}</if>
+            <if test="name != null  and name != ''"> and 客户名称 = #{name}</if>
+            <if test="phone != null  and phone != ''"> and 手机号 = #{phone}</if>
+            <if test="place != null  and place != ''"> and 省市区 = #{place}</if>
+            <if test="error != null "> and 异常 = #{error}</if>
+        </where>
+    </select>
+    
+    <select id="selectCustomerByNum" parameterType="String" resultMap="CustomerResult">
+        <include refid="selectCustomerVo"/>
+        where 客户编号 = #{num}
+    </select>
+    <select id="selectAllCustomer" resultMap="CustomerResult">
+        select * from temp_客户信息
+    </select>
+
+    <insert id="insertCustomer" parameterType="Customer">
+        insert into TEMP_客户信息
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num != null">客户编号,</if>
+            <if test="name != null">客户名称,</if>
+            <if test="phone != null">手机号,</if>
+            <if test="place != null">省市区,</if>
+            <if test="error != null">异常,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="num != null">#{num},</if>
+            <if test="name != null">#{name},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="place != null">#{place},</if>
+            <if test="error != null">#{error},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCustomer" parameterType="Customer">
+        update TEMP_客户信息
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">客户名称 = #{name},</if>
+            <if test="phone != null">手机号 = #{phone},</if>
+            <if test="place != null">省市区 = #{place},</if>
+            <if test="error != null">异常 = #{error},</if>
+        </trim>
+        where 客户编号 = #{num}
+    </update>
+    <update id="updateCustomerByNum" >
+        update TEMP_客户信息 set
+           异常=#{error}
+        where 客户编号 = #{num}
+    </update>
+
+    <delete id="deleteCustomerByNum" parameterType="String">
+        delete from TEMP_客户信息 where 客户编号 = #{num}
+    </delete>
+
+    <delete id="deleteCustomerByNums" parameterType="String">
+        delete from TEMP_客户信息 where 客户编号 in 
+        <foreach item="num" collection="array" open="(" separator="," close=")">
+            #{num}
+        </foreach>
+    </delete>
+
+</mapper>
