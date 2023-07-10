@@ -32,7 +32,7 @@ public class UserWorkController extends BaseController
      * 获取work的正确数据
      */
 
-    @GetMapping("/test")
+    @GetMapping("/insert")
     @ResponseBody
     public TableDataInfo GetWork()
     {

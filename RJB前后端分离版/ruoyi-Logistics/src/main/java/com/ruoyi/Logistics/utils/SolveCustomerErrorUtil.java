@@ -23,7 +23,7 @@ public class SolveCustomerErrorUtil {
             Customer customer = null;
             for (int i = 0; i < cnt; i ++ ) {
                 customer = customers.get(i);
-                if (!(customer.getNum().matches("^[1-9]\\d{5}(18|19|20)\\d{2}(0\\d|1[0-2])([0-2]\\d|3[0-1])\\d{3}[0-9Xx]$")&&customer.getNum().matches("^1[3456789]\\d{9}$"))) {
+                if (!(customer.getNum().matches("^[1-9]\\d{5}(18|19|20)\\d{2}(0\\d|1[0-2])([0-2]\\d|3[0-1])\\d{3}[0-9Xx]$")&&customer.getPhone().matches("^1[3456789]\\d{9}$"))) {
                     customer.setError(1);
                 }
                 counts.add(customer.getError());

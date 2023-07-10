@@ -3,6 +3,7 @@ package com.ruoyi.Logistics.clean.service.impl;
 import java.util.List;
 
 import com.ruoyi.Logistics.clean.domain.Company;
+import com.ruoyi.Logistics.clean.domain.UserWork;
 import com.ruoyi.Logistics.clean.mapper.CompanyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -114,23 +115,39 @@ public class UserCompanyServiceImpl implements IUserCompanyService
         for (UserCompany user:userCompanies
         ) {
             //插入时也需要考虑到去重
-            if(userCompanyMapper.selectUserCompanyList(user) == null){
+//            if(userCompanyMapper.selectUserCompanyList(user) == null){
                 int i = userCompanyMapper.insertUserCompany(user);
-                int i1 = companyMapper.deleteCompanyByNum(user.getCompanyNum());
-            }else{
-                Company company = new Company();
-                company.setCompanyNum(user.getCompanyNum());
-                company.setCompanyName(user.getCompanyName());
-                company.setCustomerNum(user.getCustomerNum());
-                company.setPersonName(user.getPersonName());
-                company.setPhone(user.getPhone());
-                company.setPhone(user.getPlace());
-                company.setError(1);
-                int i = companyMapper.updateCompany(company);
-            }
-
+//            }else{
+//                Company company = new Company();
+//                company.setCompanyNum(Integer.valueOf(user.getCompanyNum()));
+//                company.setCompanyName(user.getCompanyName());
+//                company.setCustomerNum(user.getCustomerNum());
+//                company.setPersonName(user.getPersonName());
+//                company.setPhone(user.getPhone());
+//                company.setPlace(user.getPlace());
+//                company.setError(1);
+//                int i = companyMapper.updateCompany(company);
+//            }
         }
-        List<UserCompany> ans = userCompanyMapper.selectUserCompanyList(new UserCompany());
-        return ans;
+        String a[]= new String[1001];
+        int b= 0 ;
+        int c= 0 ;
+        int size = userCompanies.size();
+        for (UserCompany user:userCompanies
+        ) {
+            b++;
+            c++;
+            a[b]= String.valueOf(user.getCompanyNum());
+            if(b==1000){
+                int i1 = companyMapper.deleteCompanyByNums(a);
+                b=0;
+                a=new String[1001];
+            }
+            if(c==(size-1)){
+                int i1 = companyMapper.deleteCompanyByNums(a);
+            }
+        }
+        return null;
+
     }
 }

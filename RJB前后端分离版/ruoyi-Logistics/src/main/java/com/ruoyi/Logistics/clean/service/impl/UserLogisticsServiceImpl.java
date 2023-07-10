@@ -2,6 +2,7 @@ package com.ruoyi.Logistics.clean.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.Logistics.clean.domain.UserWork;
 import com.ruoyi.Logistics.clean.mapper.LogisticsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -120,9 +121,27 @@ public class UserLogisticsServiceImpl implements IUserLogisticsService
         for (UserLogistics user: list
         ) {
             int i = userLogisticsMapper.insertUserLogistics(user);
-            int i1 = logisticsMapper.deleteLogisticsByTNum(user.gettNum());
         }
-        List<UserLogistics> userLogistics = userLogisticsMapper.selectUserLogisticsList(new UserLogistics());
-        return userLogistics;
+        String a[]= new String[1001];
+        int b= 0 ;
+        int c= 0 ;
+        int size = list.size();
+        for (UserLogistics user: list
+        ) {
+            b++;
+            c++;
+            a[b]= String.valueOf(user.gettNum());
+            if(b==1000){
+                int i1 = logisticsMapper.deleteLogisticsByTNums(a);
+                b=0;
+                a=new String[1001];
+            }
+            if(c==(size-1)){
+                int i1 = logisticsMapper.deleteLogisticsByTNums(a);
+            }
+        }
+        //List<UserWork> userWorks = userWorkMapper.selectUserWorkList(new UserWork());
+        return null;
+       // List<UserLogistics> userLogistics = userLogisticsMapper.selectUserLogisticsList(new UserLogistics());
     }
 }

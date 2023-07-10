@@ -66,7 +66,7 @@ public interface IUserContainerService
      * @param num userContainer主键
      * @return 结果
      */
-    public int deleteUserContainerByNum(Integer num);
+    public int deleteUserContainerByNum(String num);
 
     public List<UserContainer> getContainer();
 }

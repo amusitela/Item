@@ -71,7 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where 公司号 = #{companyNum}
     </update>
 
-    <delete id="deleteCompanyByNum" parameterType="Integer">
+    <delete id="deleteCompanyByNum" parameterType="String">
         delete from TEMP_物流公司 where 公司号 = #{companyNum}
     </delete>
 

@@ -34,7 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where 公司号 = #{companyNum}
     </select>
     <select id="selectTempCompanyList" resultMap="UserCompanyResult">
-        select 公司号,公司名称,客户编号,联系人,电话,省市区 from temp_物流公司 where 异常=0
+        select 公司号,公司名称,客户编号,联系人,电话,省市区 from temp_物流公司 where 异常= 0
     </select>
 
 

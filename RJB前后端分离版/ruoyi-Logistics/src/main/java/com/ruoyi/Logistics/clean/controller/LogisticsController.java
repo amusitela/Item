@@ -2,6 +2,8 @@ package com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.Logistics.clean.service.IUserLogisticsService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,16 +29,27 @@ public class LogisticsController extends BaseController
     @Autowired
     private ILogisticsService logisticsService;
 
+    @Autowired
+    private IUserLogisticsService userLogisticsService;
     /**
      * 查询清理Logistics列表
      */
     //@RequiresPermissions("clean:Logistics:list")
     @GetMapping("/logisticsclean")
     @ResponseBody
-    public  TableDataInfo LogisticsClean()
+    public  AjaxResult LogisticsClean()
     {
-        List<Logistics> list = logisticsService.LogisticsClean();
-        return getDataTable(list);
+        AjaxResult ajax = new AjaxResult();
+        try {
+            logisticsService.LogisticsClean();
+            userLogisticsService.GetLogistics();
+            ajax = AjaxResult.success();
+            return ajax;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajax = AjaxResult.error();
+            return ajax;
+        }
     }
 
 

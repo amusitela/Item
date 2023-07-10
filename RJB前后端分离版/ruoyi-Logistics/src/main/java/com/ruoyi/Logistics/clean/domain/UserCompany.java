@@ -17,7 +17,7 @@ public class UserCompany extends BaseEntity
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private Integer companyNum;
+    private String companyNum;
 
     /** $column.columnComment */
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
@@ -39,12 +39,12 @@ public class UserCompany extends BaseEntity
     @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
     private String place;
 
-    public void setCompanyNum(Integer companyNum) 
+    public void setCompanyNum(String companyNum)
     {
         this.companyNum = companyNum;
     }
 
-    public Integer getCompanyNum() 
+    public String getCompanyNum()
     {
         return companyNum;
     }

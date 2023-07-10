@@ -109,12 +109,12 @@ public class ContainerServiceImpl implements IContainerService
         Container container = null;
 
         //控制台输出
-        for (int i = 0; i < containers.size(); i ++ ) System.out.println(containers.get(i));
+        //for (int i = 0; i < containers.size(); i ++ ) System.out.println(containers.get(i));
 
         //具体去重的方法
         for (int i = 0; i < containers.size(); i ++ ) {
             container = containers.get(i);
-            System.out.println(container);
+           // System.out.println(container);
             if (containermap.get(container.getNum()) == null) {
                 containermap.put(container.getNum(), 1);
             }
@@ -122,7 +122,7 @@ public class ContainerServiceImpl implements IContainerService
                 container.setError(1);
             }
             //更新标记异常数据
-            System.out.println(container.getError());
+            //System.out.println(container.getError());
             if (container.getError() == 1) containerMapper.updateContainer(container);
         }
         return containerMapper.selectContainerList(new Container());

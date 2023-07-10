@@ -57,7 +57,7 @@ public interface ICompanyService
      * @param num company主键
      * @return 结果
      */
-    public int deleteCompanyByNum(Integer num);
+    public int deleteCompanyByNum(String num);
 
     /**
      *清洗Company的重复数据

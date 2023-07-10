@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class GetHDFS {
 
-    public static void getHdfs( String hdfsInputFile,String localOutputFile,String uri) {
+    public static String getHdfs( String hdfsInputFile,String localOutputFile,String uri) {
         try {
             // 创建Hadoop配置对象
             Configuration conf = new Configuration();
@@ -33,15 +33,15 @@ public class GetHDFS {
                 bw.newLine();
             }
 
-            GetTxt.txtToDB(localOutputFile);
-
             // 关闭读写器
             br.close();
             bw.close();
 
-            System.out.println("HDFS TXT file has been successfully read and saved to a local file.");
+            return localOutputFile;
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("发生MinIO异常：" + e.getMessage());
+            return "发生MinIO异常：" + e.getMessage();
         }
     }
 

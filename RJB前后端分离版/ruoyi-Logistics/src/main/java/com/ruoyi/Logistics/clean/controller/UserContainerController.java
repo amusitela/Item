@@ -31,7 +31,7 @@ public class UserContainerController extends BaseController
      * 查询TempContainer正确的数据列表
      * 获取过的数据将在temp表中删除
      */
-    @GetMapping("/test")
+    @GetMapping("/insert")
     @ResponseBody
     public TableDataInfo getContainer()
     {

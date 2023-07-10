@@ -79,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where 流水号 = #{num}
     </update>
 
-    <delete id="deleteUserContainerByNum" parameterType="Integer">
+    <delete id="deleteUserContainerByNum" parameterType="String">
         delete from USER_集装箱动态 where 流水号 = #{num}
     </delete>
 

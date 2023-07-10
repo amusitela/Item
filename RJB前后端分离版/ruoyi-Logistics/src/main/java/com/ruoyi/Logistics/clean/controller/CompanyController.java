@@ -2,6 +2,9 @@ package com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.Logistics.clean.domain.UserCompany;
+import com.ruoyi.Logistics.clean.service.IUserCompanyService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +30,29 @@ public class CompanyController extends BaseController
     @Autowired
     private ICompanyService companyService;
 
+    @Autowired
+    private IUserCompanyService userCompanyService;
+
+
     /**
      *清洗Company的重复数据
      *
      * */
     @GetMapping("/cleancompany")
     @ResponseBody
-    public void cleanCompany(){
-        List<Company> list = companyService.cleanCompany();
-        return;
+    public AjaxResult cleanCompany(){
+        AjaxResult ajax = new AjaxResult();
+        try {
+            companyService.cleanCompany();
+            userCompanyService.getCompany();
+            ajax = AjaxResult.success();
+            return ajax;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajax= AjaxResult.error();
+            return ajax;
+        }
+
     }
 
     /**

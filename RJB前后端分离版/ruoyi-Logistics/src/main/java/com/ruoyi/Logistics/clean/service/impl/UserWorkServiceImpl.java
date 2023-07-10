@@ -61,11 +61,28 @@ public class UserWorkServiceImpl implements IUserWorkService
         List<UserWork> list = userWorkMapper.selectTempWorkList(new UserWork());
         for (UserWork user: list
         ) {
-            int i = userWorkMapper.insertUserWork(user);
-            int i1 = workMapper.deleteWorkByNo(Long.valueOf(user.getNum()));
+            int i = userWorkMapper.insert(user);
         }
-        List<UserWork> userWorks = userWorkMapper.selectUserWorkList(new UserWork());
-        return userWorks;
+        String a[]= new String[1001];
+        int b= 0 ;
+        int c= 0 ;
+        int size = list.size();
+        for (UserWork user: list
+        ) {
+            b++;
+            c++;
+            a[b]= String.valueOf(user.getNum());
+            if(b==1000){
+                int i1 = workMapper.deleteWorkByNos(a);
+                b=0;
+                a=new String[1001];
+            }
+            if(c==(size-1)){
+                int i1 = workMapper.deleteWorkByNos(a);
+            }
+        }
+        //List<UserWork> userWorks = userWorkMapper.selectUserWorkList(new UserWork());
+        return null;
     }
 
     /**
@@ -137,6 +154,28 @@ public class UserWorkServiceImpl implements IUserWorkService
     }
 
     /**
+     * 查询入库周期分析
+     *
+     * @param conditions
+     * @return Map
+     */
+    @Override
+    public Map<String,Object> selectRUKU(Conditions conditions) {
+        return userWorkMapper.selectRUKU(conditions);
+    }
+
+    /**
+     * 查询入库周期分析
+     *
+     * @param conditions
+     * @return Map
+     */
+    @Override
+    public Map<String,Object> selectCHUKU(Conditions conditions) {
+        return userWorkMapper.selectCHUKU(conditions);
+    }
+
+    /**
      * 查询货物流向
      *
      * @param conditions
@@ -154,6 +193,12 @@ public class UserWorkServiceImpl implements IUserWorkService
      */
     @Override
     public int insertUserWork(UserWork userWork)
+    {
+        return userWorkMapper.insertUserWork(userWork);
+    }
+
+    @Override
+    public int insert(UserWork userWork)
     {
         return userWorkMapper.insertUserWork(userWork);
     }
@@ -189,7 +234,7 @@ public class UserWorkServiceImpl implements IUserWorkService
      * @return 结果
      */
     @Override
-    public int deleteUserWorkByNum(Integer num)
+    public int deleteUserWorkByNum(String num)
     {
         return userWorkMapper.deleteUserWorkByNum(num);
     }

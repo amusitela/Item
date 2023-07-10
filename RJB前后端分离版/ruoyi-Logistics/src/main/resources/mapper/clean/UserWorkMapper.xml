@@ -90,13 +90,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from port_throughput_view
         <where>
             <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
+            <if test="conditions.goods != null  and conditions.goods != ''"> and 货物名称 = #{conditions.goods}</if>
             <if test="conditions.shipCompany != null  and conditions.shipCompany != ''"> and 船公司 = #{conditions.shipCompany}</if>
             <if test="conditions.shipName != null  and conditions.shipName != ''"> and 船名称 = #{conditions.shipName}</if>
             <if test="conditions.ws != null  and conditions.ws != ''"> and 作业开始时间 = #{conditions.ws}</if>
             <if test="conditions.we != null  and conditions.we != ''"> and 作业结束时间 = #{conditions.we}</if>
-            <if test="conditions.start != null  and conditions.start != ''"> between 始发时间 = datetime #{conditions.start}</if>
-            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end}</if>
-            <if test="conditions.goods != null  and conditions.goods != ''"> and 货物名称 = #{conditions.goods}</if>
+            <if test="conditions.start != null  and conditions.start != ''"> and 始发时间 between  datetime'${conditions.start}'</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime'${conditions.end}'</if>
             <if test="conditions.tNum != null  and conditions.tNum != ''"> and 提单号 = #{conditions.tNum}</if>
             <if test="conditions.splace != null  and conditions.splace != ''"> and 启运地 = #{conditions.splace}</if>
             <if test="conditions.eplace != null  and conditions.eplace != ''"> and 目的地 = #{conditions.eplace}</if>
@@ -113,13 +113,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         from port_throughput_view
         <where>
             <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
+            <if test="conditions.goods != null  and conditions.goods != ''"> and 货物名称 = #{conditions.goods}</if>
             <if test="conditions.shipCompany != null  and conditions.shipCompany != ''"> and 船公司 = #{conditions.shipCompany}</if>
             <if test="conditions.shipName != null  and conditions.shipName != ''"> and 船名称 = #{conditions.shipName}</if>
             <if test="conditions.ws != null  and conditions.ws != ''"> and 作业开始时间 = #{conditions.ws}</if>
             <if test="conditions.we != null  and conditions.we != ''"> and 作业结束时间 = #{conditions.we}</if>
-            <if test="conditions.start != null  and conditions.start != ''"> between 始发时间 = datetime #{conditions.start}</if>
-            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end}</if>
-            <if test="conditions.goods != null  and conditions.goods != ''"> and 货物名称 = #{conditions.goods}</if>
+            <if test="conditions.start != null  and conditions.start != ''"> and 始发时间 between  datetime'${conditions.start}'</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime'${conditions.end}'</if>
             <if test="conditions.tNum != null  and conditions.tNum != ''"> and 提单号 = #{conditions.tNum}</if>
             <if test="conditions.splace != null  and conditions.splace != ''"> and 启运地 = #{conditions.splace}</if>
             <if test="conditions.eplace != null  and conditions.eplace != ''"> and 目的地 = #{conditions.eplace}</if>
@@ -139,8 +139,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="conditions.shipName != null  and conditions.shipName != ''"> and 船名称 = #{conditions.shipName}</if>
             <if test="conditions.ws != null  and conditions.ws != ''"> and 作业开始时间 = #{conditions.ws}</if>
             <if test="conditions.we != null  and conditions.we != ''"> and 作业结束时间 = #{conditions.we}</if>
-            <if test="conditions.start != null  and conditions.start != ''"> between 始发时间 = datetime #{conditions.start}</if>
-            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end}</if>
+            <if test="conditions.start != null  and conditions.start != ''"> and 始发时间 between  datetime #{conditions.start}</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime #{conditions.end}</if>
             <if test="conditions.goods != null  and conditions.goods != ''"> and 货物名称 = #{conditions.goods}</if>
             <if test="conditions.tNum != null  and conditions.tNum != ''"> and 提单号 = #{conditions.tNum}</if>
             <if test="conditions.splace != null  and conditions.splace != ''"> and 启运地 = #{conditions.splace}</if>
@@ -171,13 +171,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
             <if test="conditions.goods!=null and conditions.goods!='' ">and 货物名称 = #{conditions.goods}</if>
-            <if test="conditions.start != null  and conditions.start != ''">and between 始发时间 = datetime #{conditions.start}</if>
-            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end} </if>
+            <if test="conditions.start != null  and conditions.start != ''"> and 始发时间 between  datetime'${conditions.start}'</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime'${conditions.end}'</if>
         </where>
         GROUP BY
         DATE_FORMAT(始发时间,'%Y-%m-%d')
         order by
         DATE_FORMAT(始发时间,'%Y-%m-%d')
+    </select>
+
+    <select id="selectRUKU" parameterType="Conditions" resultType="Map">
+        -- 查询入库堆存平均时间并且进行排序
+        select 货物名称,avg(入库堆存时间) 平均入库堆存时间
+        from result
+        where 入库堆存时间 !=0
+        group by 货物名称
+        order by 平均入库堆存时间
     </select>
 
     <select id="selectTONGBI"  parameterType="Conditions" resultType="Map">
@@ -189,8 +198,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="conditions.port != null  and conditions.port != ''"> 作业港口 = #{conditions.port}</if>
             <if test="conditions.goods!=null and conditions.goods!='' ">and 货物名称 = #{conditions.goods}</if>
-            <if test="conditions.start != null  and conditions.start != ''">and between 始发时间 = datetime #{conditions.start}</if>
-            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end} </if>
+            <if test="conditions.start != null  and conditions.start != ''"> and 始发时间 between  datetime'${conditions.start}'</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime'${conditions.end}'</if>
         </where>
         GROUP BY
         now
@@ -207,10 +216,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="conditions.port != null  and conditions.port != ''"> 启运地 = #{conditions.port}</if>
             <if test="conditions.goods!=null and conditions.goods!='' ">and 货物名称 = #{conditions.goods}</if>
-            <if test="conditions.start != null  and conditions.start != ''">and between 始发时间 = datetime #{conditions.start}</if>
-            <if test="conditions.end != null  and conditions.end != ''"> and datetime 到达时间 = #{conditions.end} </if>
+            <if test="conditions.start != null  and conditions.start != ''"> and 始发时间 between  datetime'${conditions.start}'</if>
+            <if test="conditions.end != null  and conditions.end != ''"> and datetime'${conditions.end}'</if>
         </where>
         order by 作业港口
+    </select>
+    <select id="selectCHUKU" parameterType="Conditions" resultType="Map">
+        -- 查询出库堆存平均时间并且进行排序
+        select 货物名称,avg(出库堆存时间) 平均出库堆存时间
+        from result
+        where 出库堆存时间 !=0
+        group by 货物名称
+        order by 平均出库堆存时间
     </select>
 
     <insert id="insertUserWork" parameterType="UserWork">
@@ -247,6 +264,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="eplace != null">#{eplace},</if>
             <if test="status != null">#{status},</if>
          </trim>
+    </insert>
+
+    <insert id="insert" parameterType="UserWork">
+        insert into USER_WORK
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="num != null">作业号,</if>
+            <if test="shipCompany != null">船公司,</if>
+            <if test="shipName != null">船名称,</if>
+            <if test="ws != null">作业开始时间,</if>
+            <if test="we != null">作业结束时间,</if>
+            <if test="start != null">始发时间,</if>
+            <if test="end != null">到达时间,</if>
+            <if test="port != null">作业港口,</if>
+            <if test="tNum != null">提单号,</if>
+            <if test="containerNum != null">集装箱箱号,</if>
+            <if test="cc != null">"箱尺寸（TEU）",</if>
+            <if test="splace != null">启运地,</if>
+            <if test="eplace != null">目的地,</if>
+            <if test="status != null">操作,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="num != null">'${num}',</if>
+            <if test="shipCompany != null">'${shipCompany}',</if>
+            <if test="shipName != null">'${shipName}',</if>
+            <if test="ws != null">'${ws}',</if>
+            <if test="we != null">'${we}',</if>
+            <if test="start != null">'${start}',</if>
+            <if test="end != null">'${end}',</if>
+            <if test="port != null">'${port}',</if>
+            <if test="tNum != null">'${tNum}',</if>
+            <if test="containerNum != null">'${containerNum}',</if>
+            <if test="cc != null">'${cc}',</if>
+            <if test="splace != null">'${splace}',</if>
+            <if test="eplace != null">'${eplace}',</if>
+            <if test="status != null">'${status}',</if>
+        </trim>
     </insert>
 
     <update id="updateUserWork" parameterType="UserWork">

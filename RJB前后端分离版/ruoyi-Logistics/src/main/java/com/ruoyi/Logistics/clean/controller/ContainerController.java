@@ -2,6 +2,8 @@ package com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.Logistics.clean.service.IUserContainerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +29,30 @@ public class ContainerController extends BaseController
     @Autowired
     private IContainerService containerService;
 
+    @Autowired
+    private IUserContainerService userContainerService;
+
+
     /**
      * 清洗container数据
      * */
     @GetMapping("/cleancontainer")
     @ResponseBody
-    public TableDataInfo cleanContainer()
+    public AjaxResult cleanContainer()
     {
-        List<Container> list = containerService.cleanContainer();
-        return getDataTable(list);
+        AjaxResult ajax = new AjaxResult();
+
+        try {
+            containerService.cleanContainer();
+            userContainerService.getContainer();
+            ajax = AjaxResult.success();
+            return ajax;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajax = AjaxResult.error();
+            return ajax;
+        }
+
     }
 
     /**

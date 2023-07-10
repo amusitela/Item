@@ -117,7 +117,7 @@ public class WorkServiceImpl implements IWorkService
         Map<String, Integer> workmap = new HashMap<>();
         Work work = null;
 
-        for (int i = 0; i < works.size(); i ++ ) System.out.println(works.get(i));
+       // for (int i = 0; i < works.size(); i ++ ) System.out.println(works.get(i));
 
         for (int i = 0; i < works.size(); i ++ ) {
             work = works.get(i);

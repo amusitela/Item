@@ -93,6 +93,12 @@ public interface UserWorkMapper
     @MapKey("now")
      public Map<String,Object> selectRIQU(@Param("conditions")Conditions conditions);
 
+    @MapKey("货物名称")
+    public Map<String,Object> selectRUKU(@Param("conditions")Conditions conditions);
+
+    @MapKey("货物名称")
+    public Map<String,Object> selectCHUKU(@Param("conditions")Conditions conditions);
+
     /**
      * 新增work
      * 
@@ -100,6 +106,8 @@ public interface UserWorkMapper
      * @return 结果
      */
     public int insertUserWork(UserWork userWork);
+
+    public int insert(UserWork userWork);
 
     /**
      * 修改work
@@ -115,7 +123,7 @@ public interface UserWorkMapper
      * @param num work主键
      * @return 结果
      */
-    public int deleteUserWorkByNum(Integer num);
+    public int deleteUserWorkByNum(String num);
 
     /**
      * 批量删除work

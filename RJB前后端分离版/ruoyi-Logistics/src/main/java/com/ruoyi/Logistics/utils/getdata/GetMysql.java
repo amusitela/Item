@@ -42,7 +42,7 @@ public class GetMysql {
             // 连接到目标数据库
             String driver = "dm.jdbc.driver.DmDriver";
             String targetUrl = "jdbc:dm://localhost:5236";
-            String targetUsername = "RJBR";
+            String targetUsername = "RJB";
             String targetPassword = "123456";
 
             Class.forName(driver);
@@ -74,6 +74,11 @@ public class GetMysql {
                     if(b!=null){
                         if(b.matches("^\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}$")){
                             a+="datetime";
+                        }else if(b.matches("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$")){
+                            a+="datetime";
+                            b=b.replace("T"," ");
+                            a+="'"+b+"',";
+                            continue;
                         }
                         a+="'"+rowData[i-1].toString()+"',";
 
@@ -83,10 +88,10 @@ public class GetMysql {
 
                 if(source_table.contains(table[0])){
                     // 构建插入语句，并执行
-                    insertSql = "INSERT INTO "+target_table+" (船公司,船名称,作业开始时间,作业结束时间,始发时间,到达时间,作业港口,提单号,集装箱箱号,\"箱尺寸（TEU）\",启运地,目的地,异常) VALUES "+a+"1,0)";
+                    insertSql = "INSERT INTO "+target_table+" (作业号,船公司,船名称,作业开始时间,作业结束时间,始发时间,到达时间,作业港口,提单号,集装箱箱号,\"箱尺寸（TEU）\",启运地,目的地,操作,异常) VALUES "+a+"1,0)";
                 }else if (source_table.contains(table[1])){
 
-                    insertSql = "INSERT INTO "+target_table+" (船公司,船名称,作业开始时间,作业结束时间,始发时间,到达时间,作业港口,提单号,集装箱箱号,\"箱尺寸（TEU）\",启运地,目的地,异常) VALUES "+a+"0,0)";
+                    insertSql = "INSERT INTO "+target_table+" (作业号,船公司,船名称,作业开始时间,作业结束时间,始发时间,到达时间,作业港口,提单号,集装箱箱号,\"箱尺寸（TEU）\",启运地,目的地,操作,异常) VALUES "+a+"0,0)";
 
                 }else if (source_table.contains(table[2])){
 
@@ -94,7 +99,7 @@ public class GetMysql {
 
                 }else if (source_table.contains(table[3])){
 
-                    insertSql = "INSERT INTO "+target_table+" (堆存港口,集装箱箱号,\"箱尺寸（TEU）\",提单号,堆场位置,操作,操作日期,异常) VALUES "+a+"0)";
+                    insertSql = "INSERT INTO "+target_table+" (流水号,堆存港口,集装箱箱号,\"箱尺寸（TEU）\",提单号,堆场位置,操作,操作日期,异常) VALUES "+a+"0)";
 
                 }else if (source_table.contains(table[4])){
 
@@ -102,7 +107,7 @@ public class GetMysql {
 
                 }else if (source_table.contains(table[5])){
 
-                    insertSql = "INSERT INTO "+target_table+" (公司名称,客户编号,联系人,电话,省市区,异常) VALUES "+a+"0)";
+                    insertSql = "INSERT INTO "+target_table+" (公司号,公司名称,客户编号,联系人,电话,省市区,异常) VALUES "+a+"0)";
 
                 }else{
                     System.out.println("表名错误");

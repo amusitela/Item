@@ -2,6 +2,8 @@ package com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.Logistics.clean.service.IUserWorkService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,9 @@ public class WorkController extends BaseController
     @Autowired
     private IWorkService workService;
 
+    @Autowired
+    private IUserWorkService userWorkService;
+
 
     /**
      * 清理重复数据
@@ -34,10 +39,19 @@ public class WorkController extends BaseController
      * */
     @GetMapping("/workclean")
     @ResponseBody
-    public TableDataInfo workClean()
+    public AjaxResult workClean()
     {
-        List<Work> list = workService.workClean();
-        return getDataTable(list);
+        AjaxResult ajax = new AjaxResult();
+        try {
+            workService.workClean();
+            userWorkService.GetWork();
+            ajax = AjaxResult.success();
+            return ajax;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajax=AjaxResult.error();
+            return ajax;
+        }
     }
 
     /**

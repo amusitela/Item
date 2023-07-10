@@ -110,7 +110,7 @@ public class CustomerServiceImpl implements ICustomerService
         //查询所有的用户
         List<Customer> customers = customerMapper.selectAllCustomer();
 
-        for (int i = 0; i < 5; i ++ ) System.out.println(customers.get(i));
+        //for (int i = 0; i < 5; i ++ ) System.out.println(customers.get(i));
 
         //工具类，正则表达式判断数据是否异常
         SolveCustomerErrorUtil solveErrorUtil = new SolveCustomerErrorUtil();
@@ -123,13 +123,13 @@ public class CustomerServiceImpl implements ICustomerService
         for (int i = 0; i < cnt; i ++ ) {
             customer = customers.get(i);
             customer.setError((Integer) counts.get(i));
-            System.out.println(i);
+            //System.out.println(i);
             if(customer.getError() == 1) customerMapper.updateCustomer(customer);
         }
 
         customers = customerMapper.selectAllCustomer();
 
-        for (int i = 0; i < 5; i ++ ) System.out.println(customers.get(i));
+        //for (int i = 0; i < 5; i ++ ) System.out.println(customers.get(i));
 
         return customers;
 

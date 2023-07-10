@@ -118,18 +118,14 @@ public class LogisticsServiceImpl implements ILogisticsService
         List<String> nums = logisticsMapper.findNotIn();
         //去重
         Map<String, Integer> logistcsmap = new HashMap<>();
-        //List<Customer> customers = customerService.selectAllCustomer();
-
         int p = 0;
-        // for (int i = 0; i < 5; i ++ ) System.out.println(logisticses.get(i));
-
         //工具类，规范身份信息
         SolveLogisticsErrorUtil solveLogisticsErrorUtil = new SolveLogisticsErrorUtil();
 
         Integer cnt = solveLogisticsErrorUtil.getCount(logisticses);
         List counts = solveLogisticsErrorUtil.solve(logisticses);
 
-        Logistics logistics = null;
+        Logistics logistics = new Logistics();
         for (int i = 0; i < cnt; i ++ ) {
             logistics = logisticses.get(i);
             //去重
@@ -142,17 +138,18 @@ public class LogisticsServiceImpl implements ILogisticsService
             }
             //
             if ((Integer)counts.get(i) == 1) logistics.setError((Integer) counts.get(i));
-            System.out.println(logistics.getError());
+            //System.out.println(logistics.getError());
 
             //查找物流信息数据库中有的客户，在客户信息数据库查不到的数据
-            if (p < nums.size() && nums.get(p).equals(logistics.getNum())) {
-                p ++;
-                logistics.setError(2);
-            }
+//            if (p < nums.size() && nums.get(p).equals(logistics.getNum())) {
+//                p ++;
+//                logistics.setError(2);
+//                //logisticsMapper.updateLogistics(logistics);
+//            }
 
             if(logistics.getError() == 1) logisticsMapper.updateLogistics(logistics);
-            if(logistics.getError() == 2) logisticsMapper.updateLogistics(logistics);
+            //if(logistics.getError() == 2)
         }
-        return logisticsMapper.selectLogisticsList(new Logistics());
+        return null;
     }
 }

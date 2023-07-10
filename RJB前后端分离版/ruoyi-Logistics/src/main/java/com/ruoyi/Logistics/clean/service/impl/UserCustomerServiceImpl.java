@@ -2,6 +2,7 @@ package com.ruoyi.Logistics.clean.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.Logistics.clean.domain.UserWork;
 import com.ruoyi.Logistics.clean.mapper.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -114,10 +115,29 @@ public class UserCustomerServiceImpl implements IUserCustomerService
         for (UserCustomer user: list
         ) {
             int i = userCustomerMapper.insertUserCustomer(user);
-            int i1 = customerMapper.deleteCustomerByNum(user.getNum());
         }
-        List<UserCustomer> userCustomers = userCustomerMapper.selectUserCustomerList(new UserCustomer());
-        return userCustomers;
+        String a[]= new String[1001];
+        int b= 0 ;
+        int c= 0 ;
+        int size = list.size();
+        for (UserCustomer user: list
+        ) {
+            b++;
+            c++;
+            a[b]= String.valueOf(user.getNum());
+            if(b==1000){
+                int i1 = customerMapper.deleteCustomerByNums(a);
+                b=0;
+                a=new String[1001];
+            }
+            if(c==(size-1)){
+                int i1 = customerMapper.deleteCustomerByNums(a);
+            }
+        }
+        //List<UserWork> userWorks = userWorkMapper.selectUserWorkList(new UserWork());
+        return null;
+//        List<UserCustomer> userCustomers = userCustomerMapper.selectUserCustomerList(new UserCustomer());
+//        return userCustomers;
     }
 
 }

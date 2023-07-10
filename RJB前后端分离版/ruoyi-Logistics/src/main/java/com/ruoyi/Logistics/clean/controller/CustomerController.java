@@ -2,6 +2,8 @@ package  com.ruoyi.Logistics.clean.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.Logistics.clean.service.IUserCustomerService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +29,27 @@ public class CustomerController extends BaseController
     @Autowired
     private ICustomerService customerService;
 
-    @GetMapping("/test")
+    @Autowired
+    private IUserCustomerService userCustomerService;
+
+
+    @GetMapping("/cleancustomer")
     @ResponseBody
-    public TableDataInfo cleanCustomer()
+    public AjaxResult cleanCustomer()
     {
-        List<Customer> list = customerService.cleanCustomer();
-        return getDataTable(list);
+        AjaxResult ajax = new AjaxResult();
+
+        try {
+            customerService.cleanCustomer();
+            userCustomerService.GetCustomer();
+            ajax = AjaxResult.success();
+            return ajax;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ajax = AjaxResult.error();
+            return ajax;
+        }
+
     }
 
     /**

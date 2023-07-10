@@ -86,6 +86,21 @@ public interface IUserWorkService
      */
     public Map<String,Object> selectGoodsThroughput(Conditions conditions);
 
+    /**
+     * 查询货物入库周期分析
+     *
+     * @param conditions
+     * @return Map
+     */
+    public Map<String,Object> selectRUKU(Conditions conditions);
+
+    /**
+     * 查询货物出库周期分析
+     *
+     * @param conditions
+     * @return Map
+     */
+    public Map<String,Object> selectCHUKU(Conditions conditions);
 
     /**
      * 查询货物流向
@@ -109,6 +124,7 @@ public interface IUserWorkService
      */
     public int insertUserWork(UserWork userWork);
 
+    public int insert(UserWork userWork);
     /**
      * 修改work
      * 
@@ -131,5 +147,5 @@ public interface IUserWorkService
      * @param num work主键
      * @return 结果
      */
-    public int deleteUserWorkByNum(Integer num);
+    public int deleteUserWorkByNum(String num);
 }

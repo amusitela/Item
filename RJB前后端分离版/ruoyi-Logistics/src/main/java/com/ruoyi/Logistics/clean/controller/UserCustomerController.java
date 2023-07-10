@@ -31,7 +31,7 @@ public class UserCustomerController extends BaseController
      * 查询获取TempCustomer正确数据的列表
      *获取过的数据将在temp表中删除
      */
-    @GetMapping("/test")
+    @GetMapping("/insert")
     @ResponseBody
     public TableDataInfo GetCustomer()
     {

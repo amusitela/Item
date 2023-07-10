@@ -57,7 +57,7 @@ public interface UserContainerMapper
      * @param num userContainer主键
      * @return 结果
      */
-    public int deleteUserContainerByNum(Integer num);
+    public int deleteUserContainerByNum(String num);
 
     /**
      * 批量删除userContainer

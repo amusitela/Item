@@ -2,6 +2,7 @@ package com.ruoyi.Logistics.clean.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.Logistics.clean.domain.UserWork;
 import com.ruoyi.Logistics.clean.mapper.ContainerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,7 +103,7 @@ public class UserContainerServiceImpl implements IUserContainerService
      * @return 结果
      */
     @Override
-    public int deleteUserContainerByNum(Integer num)
+    public int deleteUserContainerByNum(String num)
     {
         return userContainerMapper.deleteUserContainerByNum(num);
     }
@@ -114,9 +115,28 @@ public class UserContainerServiceImpl implements IUserContainerService
         for (UserContainer user : list
         ) {
             int i = userContainerMapper.insertUserContainer(user);
-            int i1 = containerMapper.deleteContainerByNum(user.getNum());
         }
-        List<UserContainer> userContainers = userContainerMapper.selectUserContainerList(new UserContainer());
-        return userContainers;
+        String a[]= new String[1001];
+        int b= 0 ;
+        int c= 0 ;
+        int size = list.size();
+        for (UserContainer user : list
+        ) {
+            b++;
+            c++;
+            a[b]= String.valueOf(user.getNum());
+            if(b==1000){
+                int i1 = containerMapper.deleteContainerByNums(a);
+                b=0;
+                a=new String[1001];
+            }
+            if(c==(size-1)){
+                int i1 = containerMapper.deleteContainerByNums(a);
+            }
+        }
+        //List<UserWork> userWorks = userWorkMapper.selectUserWorkList(new UserWork());
+        return null;
+//        List<UserContainer> userContainers = userContainerMapper.selectUserContainerList(new UserContainer());
+//        return userContainers;
     }
 }

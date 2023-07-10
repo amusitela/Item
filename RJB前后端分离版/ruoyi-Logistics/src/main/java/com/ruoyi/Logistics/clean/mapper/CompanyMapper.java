@@ -49,7 +49,7 @@ public interface CompanyMapper
      * @param num company主键
      * @return 结果
      */
-    public int deleteCompanyByNum(Integer num);
+    public int deleteCompanyByNum(String num);
 
     /**
      * 批量删除company

@@ -83,6 +83,7 @@ public class CompanyServiceImpl implements ICompanyService
         return companyMapper.deleteCompanyByNums(Convert.toStrArray(nums));
     }
 
+
     /**
      * 删除company信息
      * 
@@ -90,7 +91,7 @@ public class CompanyServiceImpl implements ICompanyService
      * @return 结果
      */
     @Override
-    public int deleteCompanyByNum(Integer num)
+    public int deleteCompanyByNum(String num)
     {
         return companyMapper.deleteCompanyByNum(num);
     }
@@ -108,20 +109,27 @@ public class CompanyServiceImpl implements ICompanyService
         Map<String, Integer> companymapper = new HashMap<>();
         Company company = null;
         //控制台输出
-        for (int i = 0; i < companies.size(); i ++ ) System.out.println(companies.get(i));
+        //for (int i = 0; i < companies.size(); i ++ ) System.out.println(companies.get(i));
         //去重的具体思路
         for (int i = 0; i < companies.size(); i ++ ) {
             company = companies.get(i);
-            System.out.println(company);
+            //System.out.println(company);
             if (companymapper.get(company.getCompanyName()) == null) {
                 companymapper.put(company.getCompanyName(), 1);
             }
             else {
                 company.setError(1);
             }
-            System.out.println(company.getError());
+            if(!company.getPhone().matches("^1[3456789]\\d{9}$")){
+                company.setError(1);
+            }else{
+                company.setError(0);
+                companyMapper.updateCompany(company);
+            }
+            //System.out.println(company.getError());
             //更新标记异常数据
-            if (company.getError() == 1) companyMapper.updateCompany(company);
+
+           if(company.getError()==1)companyMapper.updateCompany(company);
         }
 
         return companyMapper.selectCompanyList(new Company());
