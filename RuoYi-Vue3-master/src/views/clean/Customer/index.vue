@@ -306,8 +306,9 @@ export default {
       }, `Customer_${new Date().getTime()}.xlsx`)
     },
     handleClean() {
-             upCustomer()
-             console.log(11212)
+             upCustomer().then(()=>{
+          this.$modal.msgSuccess("治理成功");
+        })
             }
   }
 };

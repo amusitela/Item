@@ -370,9 +370,10 @@ export default {
       }, `Container_${new Date().getTime()}.xlsx`)
     },
     handleClean() {
-             upContainer()
-             console.log(12)
-            }
+             upContainer().then(()=>{
+          this.$modal.msgSuccess("治理成功");
+        })
+      }
   }
 };
 </script>

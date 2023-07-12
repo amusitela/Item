@@ -348,8 +348,9 @@ export default {
       }, `Logistics_${new Date().getTime()}.xlsx`)
     },
     handleClean() {
-             upLogistics()
-             console.log(11212)
+             upLogistics().then(()=>{
+          this.$modal.msgSuccess("治理成功");
+        })
             }
   }
 };

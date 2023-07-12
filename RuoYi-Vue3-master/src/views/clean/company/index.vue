@@ -185,6 +185,7 @@
 <script>
 import { listCompany, getCompany, delCompany, addCompany, updateCompany } from "@/api/clean/company";
 import { upCompany } from "@/api/clean/clean";
+
 export default {
   name: "Company",
   data() {
@@ -330,8 +331,9 @@ export default {
       }, `company_${new Date().getTime()}.xlsx`)
     },
     handleClean() {
-         upCompany()
-         console.log(11212)
+         upCompany().then(()=>{
+          this.$modal.msgSuccess("治理成功");
+        })
         }
   }
 };

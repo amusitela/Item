@@ -467,8 +467,9 @@ export default {
       }, `WORK_${new Date().getTime()}.xlsx`)
     },
     handleClean() {
-             upWork()
-             console.log(11212)
+             upWork().then(()=>{
+          this.$modal.msgSuccess("治理成功");
+        })
             }
   }
 };

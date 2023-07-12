@@ -87,14 +87,14 @@
 </div>
 </template>
   
-  <script lang="ts" setup>
+  <script  setup>
   import { reactive, ref } from 'vue'
   import { mysqlrequest, hdfsrequest, miniorequest} from "@/api/system/source"   
   const shuujuyuan = ref('mysql')
   const show = ref(true)
   const show1 = ref(false)
   const show2 = ref(false)
-
+  const { proxy } = getCurrentInstance();
 
   const handlechange = () =>{
     if(shuujuyuan.value=='mysql'){
@@ -133,19 +133,27 @@
     object_name:'',
 	filepath:''
   })
+  
   const onSubmit = ()=>{
      if(show.value){
         // 
-        mysqlrequest(formLabelAlign)
+        mysqlrequest(formLabelAlign).then((res)=>{
+          proxy.$modal.msgSuccess("上传文件成功");
+        })
         
      }else if(show1.value){
         //
-        hdfsrequest(formLabelAlign1)
+        hdfsrequest(formLabelAlign1).then((res)=>{
+          proxy.$modal.msgSuccess("上传文件成功");
+        })
         
      }else{
-      miniorequest(formLabelAlign2)
+      miniorequest(formLabelAlign2).then((res)=>{
+          proxy.$modal.msgSuccess("上传文件成功");
+        })
      }
   }
+
   </script>
   <style>
 .content{

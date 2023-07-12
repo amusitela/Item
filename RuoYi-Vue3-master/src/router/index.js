@@ -107,10 +107,6 @@ export const constantRoutes = [
     
   },
   {
-    path: '/transport/showlist',
-    component: () => import('@/views/system/listshow/index'),
-  },
-  {
     path: '/datascreen',
     component: () => import('@/views/dataScreen/index'),
   },
